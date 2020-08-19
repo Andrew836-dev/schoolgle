@@ -26,7 +26,26 @@ module.exports = function(app) {
         res.redirect(307, "/api/login");
       })
       .catch(err => {
-        res.status(401).json(err);
+        // Error handling to send a prettier response for invalid sign up attempts
+        // Start with a generic error message
+        let responseMessage = "An error occured";
+        if (err.errors) {
+          // sequelize validation errors use this format
+          const error = err.errors[0];
+          if (error.message === "users.email must be unique") {
+            // I personally don't like broadcasting the name of the table out, even if it is an obvious one
+            responseMessage = "That email is already in use";
+          } else if (error.message === "Validation isEmail on email failed") {
+            responseMessage = "Please enter a valid email";
+          } else {
+            // This will print the error to the console so it can be viewed and handled in a later version
+            console.log(error, "Unexpected Error Type");
+          }
+        } else {
+          // This will print the error to the console if it doesn't follow the normal sequelize format
+          console.log(err, "Unexpected Error format");
+        }
+        res.status(401).json(responseMessage);
       });
   });
 
