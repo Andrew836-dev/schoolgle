@@ -1,3 +1,3 @@
-$(document).ready(function () {
-    $('select').formSelect();
+$(document).ready(() => {
+  $("select").formSelect();
 });
