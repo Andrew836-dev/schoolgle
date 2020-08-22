@@ -166,15 +166,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
-    enrolmentsBoys: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
     enrolmentsFTE: {
       type: DataTypes.FLOAT,
       defaultValue: 0
     },
-    enrolmentsIndigennous: {
+    enrolmentsIndigenous: {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
