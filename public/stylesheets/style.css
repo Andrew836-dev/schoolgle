@@ -2,3 +2,15 @@ form.signup,
 form.login {
   margin-top: 50px;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input-field{
+  margin-bottom: 0;
+}
+.select-dropdown{
+  margin-bottom: 0;
+}
