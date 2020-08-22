@@ -45,6 +45,7 @@ module.exports = function(app) {
           // This will print the error to the console if it doesn't follow the normal sequelize format
           console.log(err, "Unexpected Error format");
         }
+        console.log(responseMessage);
         res.status(401).json(responseMessage);
       });
   });
@@ -57,6 +58,7 @@ module.exports = function(app) {
 
   // Route for getting some data about our user to be used client side
   app.get("/api/user_data", (req, res) => {
+    console.log(req.user);
     if (!req.user) {
       // The user is not logged in, send back an empty object
       res.json({});
@@ -64,6 +66,13 @@ module.exports = function(app) {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea
       res.json({
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        address: req.user.address,
+        suburb: req.user.suburb,
+        state: req.user.state,
+        postcode: req.user.postcode,
+        roleID: req.user.roleID,
         email: req.user.email,
         id: req.user.id
       });
