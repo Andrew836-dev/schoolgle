@@ -1,0 +1,82 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <h2>Sign Up To Project 2</h2>
+      <form class="col s12" id="signup">
+        <div class="row">
+          <div class="input-field col s6">
+            <input placeholder="Jane" id="first_name" type="text" class="validate">
+            <label for="first_name">First Name</label>
+          </div>
+          <div class="input-field col s6">
+            <input placeholder="Doe" id="last_name" type="text" class="validate">
+            <label for="last_name">Last Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12" class="form-group">
+            <label for="inputStreet">Street Address</label>
+            <input type="text" class="validate" id="street-input" placeholder="Address">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s8">
+            <div class="form-group">
+              <label for="inputSuburb">Suburb</label>
+              <input type="text" class="validate" id="suburb-input" placeholder="Suburb">
+            </div>
+          </div>
+          <div class="input-field col s4">
+            <select>
+              <option value="" disabled selected>Choose your State</option>
+              <option value="SA">SA</option>
+              <option value="Victoria">VIC</option>
+              <option value="Queensland">QLD</option>
+              <option value="NSW">NSW</option>
+              <option value="WA">WA</option>
+              <option value="Tasmania">TAS</option>
+              <option value="ACT">ACT</option>
+              <option value="Northern Territory">NT</option>
+            </select>
+            <label>State</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="form-group">
+              <label for="inputEmail">Email address</label>
+              <input type="email" class="form-control" id="email-input" placeholder="Email">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6">
+            <div class="form-group">
+              <label for="inputPassword">Password</label>
+              <input type="password" class="form-control" id="password-input" placeholder="Password">
+            </div>
+          </div>
+          <div class="col s6">
+            <div class="form-group">
+              <label for="inputPassword2"> Confirm Password</label>
+              <input type="password" class="form-control" id="password-input2" placeholder="Confirm Password">
+            </div>
+          </div>
+        </div>
+        <div style="display: none" id="alert" class="alert alert-danger" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span> <span class="msg"></span>
+        </div>
+        <button type="submit" class="btn btn-default" href="/search">Sign Up to Project 2</button>
+      </form>
+      <br />
+      <p>Or log in to Project 2<a href="/login">here</a></p>
+    </div>
+  </div>
+</div>
