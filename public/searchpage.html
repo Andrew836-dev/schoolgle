@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Search Page</title>
+  </head>
+
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo"><i class="large material-icons">account_balance</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li>Welcome:</li>
+          <li><a href="badges.html">UserNAME</a></li>
+          <li><a href="collapsible.html">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s3">
+              <input placeholder="Search By School Name or Suburb" id="name-or-suburb" type="text" class="validate">
+            </div>
+
+            <div class="input-field col s4">
+              <select multiple>
+                <option value="" disabled selected>School Type</option>
+                <option value="1">Preschool</option>
+                <option value="2">Primary</option>
+                <option value="3">Secondary</option>
+              </select>
+            </div>
+
+            <div class="input-field col s4">
+              <select multiple>
+                <option value="" disabled selected>State</option>
+                <option value="1">SA</option>
+                <option value="2">VIC</option>
+                <option value="3">NSW</option>
+                <option value="4">QLD</option>
+                <option value="5">ACT</option>
+                <option value="6">WA</option>
+                <option value="7">TAS</option>
+                <option value="8">NT</option>
+              </select>
+            </div>
+
+            <div class="col s1" style="margin-top: 25px;">
+              <a href="#"><i class="small material-icons">search</i></a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col m3">
+          <ul class="collection with-header">
+            <li class="collection-header">
+              <h5>Your School List</h5>
+            </li>
+            <li>
+              <a href="#!" class="collection-item black-text">Adelaide High School
+                <p>Type: <span class="school-type">Secondary</span></p>
+                <p>State: <span class="school-type">SA</span></p>
+              </a>
+            </li>
+            <li>
+              <a href="#!" class="collection-item black-text">Parkside Primary School
+                <p>Type: <span class="school-type">Primary</span></p>
+                <p>State: <span class="school-type">SA</span></p>
+              </a>
+            </li>
+            <li>
+              <a href="#!" class="collection-item black-text">Glenunga International High School
+                <p>Type: <span class="school-type">Secondary</span></p>
+                <p>State: <span class="school-type">SA</span></p>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col m9">
+          <img class="responsive-img z-depth-2" src="./img/maptest.PNG">
+        </div>
+      </div>
+    </div>
+
+    <footer class="page-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">Dev Team Bio</h5>
+            <p class="grey-text text-lighten-4">
+              We are a team of web development students working on this
+              project like it's our full time job. Any amount of feedback on this project would be greatly
+              appreciated. Click on each team member to see their personal bio's.
+            </p>
+          </div>
+          <div class="col l4 offset-l2 s12">
+            <h5 class="white-text">Team Members</h5>
+            <ul>
+              <li><a class="grey-text text-lighten-3" href="#!">Andrew Gary</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Zan Hong Mok</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Ben Hilliard</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Cynthia Yim</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Eleftherios Moschos</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          Made with Materialize
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/searchpage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+
+</html>
