@@ -56,24 +56,27 @@ module.exports = function(app) {
 
   // Route for getting some data about our user to be used client side
   app.get("/api/user_data", (req, res) => {
-    console.log(req.user);
     if (!req.user) {
       // The user is not logged in, send back an empty object
       res.json({});
     } else {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea
-      res.json({
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        address: req.user.address,
-        suburb: req.user.suburb,
-        state: req.user.state,
-        postcode: req.user.postcode,
-        roleID: req.user.roleID,
-        email: req.user.email,
-        id: req.user.id
-      });
+      const user = req.user;
+      user.password = "";
+      res.json(user);
     }
+  });
+
+  app.get("/api/schools/:postcode", (req, res) => {
+    postcode = req.params.postcode;
+    console.log("Searching : ", postcode);
+    db.School.findAll({
+      where: {
+        postcode: postcode
+      }
+    }).then(dbSchools => {
+      res.json(dbSchools);
+    });
   });
 };
