@@ -7,41 +7,18 @@ const mapsKey =
 const client = new Client({});
 const Op = db.Sequelize.Op;
 
-// client
-//   .reverseGeocode({
-//     params: {
-//       // eslint-disable-next-line camelcase
-//       result_type: "street_address",
-//       latlng: [-42.871256, 147.371473],
-//       key: mapsKey
-//     },
-//     timeout: 1000 // milliseconds
-//   })
-//   .then(r => {
-//     console.log(r.data.status);
-//     if (r.data.status === Status.OK) {
-//       r.data.results.forEach(result => console.log(result.formatted_address));
-//       console.log(r.data.results);
-//     }
-//   })
-//   .catch(e => {
-//     console.log(e.response.data.error_message);
-//   });
 module.exports = function(app) {
-  // Route for searching schools by postcode
-  app.get("/api/schools/postcode/:postcode", (req, res) => {
-    const postcode = req.params.postcode;
-    console.log("Searching : ", postcode);
+  // Route for searching schools by conditions in the request body
+  app.post("/api/schools/", (req, res) => {
+    console.log("Searching : ", req.body);
     db.School.findAll({
-      where: {
-        postcode: postcode
-      }
+      where: req.body
     }).then(dbSchools => {
       res.json(dbSchools);
     });
   });
 
-  app.get("/api/schools/nearby/", (req, res) => {
+  app.post("/api/schools/nearby/", (req, res) => {
     client
       .placesNearby({
         params: {
@@ -61,16 +38,19 @@ module.exports = function(app) {
   });
 
   // Route for searching schools by name
-  app.get("/api/schools/name/:name", (req, res) => {
-    const name = req.params.name;
+  app.post("/api/schools/name/:name", (req, res) => {
+    const conditions = {
+      schoolName: {
+        [Op.like]: req.params.name
+      }
+    };
+    if (req.body) {
+      console.log(req.body);
+    }
     console.log("Searching : ", name);
     db.School.findAll({
       attributes: ["schoolName"],
-      where: {
-        schoolName: {
-          [Op.like]: `${name}%`
-        }
-      }
+      where: conditions
     }).then(dbNames => {
       res.json(dbNames);
     });
