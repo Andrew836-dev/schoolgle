@@ -67,16 +67,4 @@ module.exports = function(app) {
       res.json(user);
     }
   });
-
-  app.get("/api/schools/:postcode", (req, res) => {
-    postcode = req.params.postcode;
-    console.log("Searching : ", postcode);
-    db.School.findAll({
-      where: {
-        postcode: postcode
-      }
-    }).then(dbSchools => {
-      res.json(dbSchools);
-    });
-  });
 };
