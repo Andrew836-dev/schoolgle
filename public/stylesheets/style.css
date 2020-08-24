@@ -1,4 +1,4 @@
-form.signup,
+form#signup,
 form.login {
   margin-top: 50px;
 }
@@ -66,8 +66,13 @@ form.login {
  }
 
  /* END OF STYLING FOR LANDING PAGE */
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.mapDiv {
+  padding: 20px 0px;
 }
