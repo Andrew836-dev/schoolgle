@@ -44,7 +44,7 @@ google.maps.event.addDomListener(window, "load", () => {
       // icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
     });
     const html = `
-    <h1>${school.schoolName}</h1>
+    <h6>${school.schoolName}</h6>
     <p>${school.schoolSector}, ${school.schoolType}</p>
     <button class='schoolButton' data-id='${school.acaraSMLID}'>Add</button>`;
     google.maps.event.addListener(marker, "click", function() {
