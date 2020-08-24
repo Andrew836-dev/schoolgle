@@ -4,11 +4,15 @@
  * declare map as a global variable
  */
 let map;
+let center = [-25.808678, 134.918921];
 /*
  * declare array for storing marker objects
  */
 const markerArray = [];
-let center = [-25.808678, 134.918921];
+/*
+ * object for storing search conditions
+ */
+const conditions = {};
 
 /*
  * use google maps api built-in mechanism to attach dom events
@@ -23,7 +27,7 @@ google.maps.event.addDomListener(window, "load", () => {
   map = new google.maps.Map(document.getElementById("map_div"), {
     center: center,
     // ,
-    // zoom 4 is most of australia, 6 is about 1 state, 10 is a city.
+    // zoom 4 is most of australia, 6 is about 1 state, 10 is a full city, 14 is a suburb.
     zoom: 14,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
@@ -56,9 +60,59 @@ google.maps.event.addDomListener(window, "load", () => {
   }
 
   /*
+   * Clear all markers from the map
+   */
+  function clearAllMarkers() {
+    markerArray.forEach(marker => marker.setMap(null));
+    markerArray.length = 0;
+  }
+
+  /*
    * add markers to map
    */
-  $.get("/api/schools/postcode/5000").then(schools => {
-    schools.forEach(school => markerArray.push(createSchoolMarker(school)));
+  function getMarkers(conditions) {
+    $.post("/api/schools/", conditions).then(schools => {
+      clearAllMarkers();
+      schools.forEach(school => markerArray.push(createSchoolMarker(school)));
+      if (markerArray.length) {
+        map.setCenter(markerArray[0].position);
+      } else {
+        // make an error message display
+      }
+    });
+  }
+
+  $("#search-button").on("click", event => {
+    event.preventDefault();
+    const searchTerm = $("#search-text")
+      .val()
+      .trim();
+    const schoolType = $("#school-type").val();
+    if (schoolType === "School Type") {
+      delete conditions.schoolType;
+    } else {
+      conditions.schoolType = schoolType;
+    }
+    if (isNaN(parseInt(searchTerm))) {
+      delete conditions.postcode;
+      conditions.schoolName = searchTerm;
+    } else if (searchTerm.length === 4) {
+      delete conditions.schoolName;
+      conditions.postcode = searchTerm;
+      getMarkers(conditions);
+    } else {
+      // error message for missing search term
+    }
   });
+
+  if (window.location.search.match(/postcode/g)) {
+    conditions.postcode = window.location.search.match(/\d{4}/g)[0];
+  }
+  if (window.location.search.match(/schoolType/g)) {
+    conditions.schoolType = window.location.search
+      .match(/schoolType=[A-Za-z]+/g)[0]
+      .split("=")[1];
+  }
+  console.log(conditions);
+  getMarkers(conditions);
 });
