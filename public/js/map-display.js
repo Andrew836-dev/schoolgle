@@ -24,7 +24,7 @@ google.maps.event.addDomListener(window, "load", () => {
     center: center,
     // ,
     // zoom 4 is most of australia, 6 is about 1 state, 10 is a city.
-    zoom: 10,
+    zoom: 14,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
 
