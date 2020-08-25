@@ -67,40 +67,4 @@ module.exports = function (app) {
       res.json(user);
     }
   });
-
-  app.get("/api/schools/:postcode", (req, res) => {
-    postcode = req.params.postcode;
-    console.log("Searching : ", postcode);
-    db.School.findAll({
-      where: {
-        postcode: postcode
-      }
-    }).then(dbSchools => {
-      res.json(dbSchools);
-    });
-  });
-
-  // app.get("/api/schools/:schoolType", (req, res) => {
-  //   schoolType = req.params.schoolType;
-  //   console.log("Searching : ", schoolType);
-  //   db.School.findAll({
-  //     where: {
-  //       schoolType: schoolType
-  //     }
-  //   }).then(dbSchools => {
-  //     res.json(dbSchools);
-  //   });
-  // });
-
-  // app.get("/api/schools/:state", (req, res) => {
-  //   state = req.params.state;
-  //   console.log("Searching : ", state);
-  //   db.School.findAll({
-  //     where: {
-  //       state: state
-  //     }
-  //   }).then(dbSchools => {
-  //     res.json(dbSchools);
-  //   });
-  // });
 };
