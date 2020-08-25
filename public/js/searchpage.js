@@ -1,72 +1,166 @@
 $(document).ready(() => {
-  // $("select").formSelect();
-  const $schoolContainer = $(".school-container");
+  /*
+   * declare map as a global variable
+   */
+  let map;
+  let center = [-25.808678, 134.918921];
+  /*
+   * declare array for storing marker objects
+   */
+  const markerArray = [];
+  /*
+   * object for storing search conditions
+   */
+  // let conditions = {};
+  /*
+   * use google maps api built-in mechanism to attach dom events
+   */
+  google.maps.event.addDomListener(window, "load", () => {
+    /* This code borrows from http://jsfiddle.net/salman/4mtyu/ */
 
-  let schools = [];
-
-  $("#submitBtn").on("click", () => {
-    event.preventDefault();
-    console.log("submitted");
-    const postcode = $("#searchInput")
-      .val()
-      .trim();
-    console.log(postcode);
-
-    getSchoolsByPostcode(postcode);
-  });
-
-  function getSchoolsByPostcode(postcode) {
-    $.get("/api/schools/" + postcode, data => {
-      console.log(data);
-      schools = data;
-      initRows();
+    /*
+     * create map
+     */
+    // This Lat and Long is close to the centre of Australia
+    // center = new google.maps.LatLng(-25.808678, 134.918921);
+    center = new google.maps.LatLng(-34.9285, 138.6007);
+    map = new google.maps.Map(document.getElementById("map_div"), {
+      center: center,
+      // ,
+      // zoom 4 is most of australia, 6 is about 1 state, 10 is a full city, 14 is a suburb.
+      zoom: 14,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-  }
 
-  // function getSchoolsByType(schoolType) {
-  //   $.get("/api/schools/" + schoolType, data => {
-  //     console.log(data);
-  //     schools = data;
-  //     initRows();
-  //   });
-  // }
+    /*
+     * create infowindow (which will be used by markers)
+     */
+    const infoWindow = new google.maps.InfoWindow();
 
-  // function getSchoolsByState(state) {
-  //   $.get("/api/schools/" + state, data => {
-  //     console.log(data);
-  //     schools = data;
-  //     initRows();
-  //   });
-  // }
-
-  function initRows() {
-    $schoolContainer.empty();
-    const rowsToAdd = [];
-    for (let i = 0; i < schools.length; i++) {
-      rowsToAdd.push(createSchoolRows(schools[i]));
+    /*
+     * marker creater function
+     */
+    function createSchoolMarker(school) {
+      const marker = new google.maps.Marker({
+        position: new google.maps.LatLng(school.latitude, school.longitude),
+        map: map
+        // the icon option can be used for a custom marker
+        // icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
+      });
+      const html = `
+    <h6>${school.schoolName}</h6>
+    <p>${school.schoolSector}, ${school.schoolType}</p>
+    <button class='schoolButton' data-id='${school.acaraSMLID}'>Add</button>`;
+      google.maps.event.addListener(marker, "click", function() {
+        infoWindow.setContent(html);
+        infoWindow.open(map, this);
+        map.setCenter(this.position);
+      });
+      return marker;
     }
-    $schoolContainer.prepend(rowsToAdd);
-  }
 
-  function createSchoolRows(schools) {
-    const $newInputRow = $(
-      [
-        "<li>",
-        "<a href='#!' class='collection-item black-text'>",
-        schools.schoolName,
-        "<p>Type: <span class='school-type'>",
-        schools.schoolType,
-        "</span></p>",
-        "<p>State: <span class='school-type'>",
-        schools.state,
-        "</span></p>",
-        "</a>",
-        "</li>"
-      ].join("")
-    );
+    /*
+     * Clear all markers from the map
+     */
+    function clearAllMarkers() {
+      markerArray.forEach(marker => marker.setMap(null));
+      markerArray.length = 0;
+    }
+    // map.setCenter(markerArray[0].position);
+    // $("select").formSelect();
+    const $schoolContainer = $(".school-container");
 
-    $newInputRow.data("schools", schools);
+    let schools = [];
 
-    return $newInputRow;
-  }
+    $("#submitBtn").on("click", () => {
+      event.preventDefault();
+      console.log("submitted");
+      const searchTerm = $("#searchInput")
+        .val()
+        .trim();
+      console.log(searchTerm);
+      if (searchTerm.match(/\d{4}/g)) {
+        getSchoolsByPostcode(searchTerm.match(/\d{4}/g));
+      } else {
+        getSchoolsByName(searchTerm);
+      }
+    });
+
+    $schoolContainer.on("click", "li", function() {
+      const index = parseInt($(this).data("index"));
+      map.setCenter(markerArray[index].position);
+    });
+
+    function getSchoolsByPostcode(postcode) {
+      $.post("/api/schools/", {
+        postcode: postcode
+      }).then(addMarkers);
+    }
+
+    function getSchoolsByName(schoolName) {
+      $.post("/api/schools/name/" + schoolName).then(addMarkers);
+    }
+
+    // function getSchoolsByType(schoolType) {
+    //   $.get("/api/schools/" + schoolType, data => {
+    //     console.log(data);
+    //     schools = data;
+    //     initRows();
+    //   });
+    // }
+
+    // function getSchoolsByState(state) {
+    //   $.get("/api/schools/" + state, data => {
+    //     console.log(data);
+    //     schools = data;
+    //     initRows();
+    //   });
+    // }
+    function addMarkers(schoolData) {
+      clearAllMarkers();
+      schoolData.forEach(school => {
+        markerArray.push(createSchoolMarker(school));
+      });
+      if (markerArray.length) {
+        map.setCenter(markerArray[0].position);
+      } else {
+        // make an error message display
+      }
+      schools = schoolData;
+      initRows();
+    }
+
+    function initRows() {
+      $schoolContainer.empty();
+      const rowsToAdd = [];
+      for (let i = 0; i < schools.length; i++) {
+        rowsToAdd.push(createSchoolRows(schools[i], i));
+      }
+      $schoolContainer.prepend(rowsToAdd);
+    }
+
+    function createSchoolRows(schools, index) {
+      const $newInputRow = $(
+        [
+          "<li data-index='",
+          index,
+          "'>",
+          "<a href='#!' class='collection-item black-text'>",
+          schools.schoolName,
+          "<p>Type: <span class='school-type'>",
+          schools.schoolType,
+          "</span></p>",
+          "<p>State: <span class='school-type'>",
+          schools.state,
+          "</span></p>",
+          "</a>",
+          "</li>"
+        ].join("")
+      );
+
+      $newInputRow.data("schools", schools);
+
+      return $newInputRow;
+    }
+  });
 });
