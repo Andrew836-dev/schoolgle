@@ -2,10 +2,10 @@
 
 <div class="container">
   <div class="row">
-    <form class="col s12">
-      <div class="row">
+    <form class="col s12" id="schoolSearch">
+      <div class=" row">
         <div class="input-field col s3">
-          <input placeholder="Search By School Name or Suburb" id="name-or-suburb" type="text" class="validate">
+          <input placeholder="Search By School Name or Suburb" id="searchInput" type="text" class="validate">
         </div>
 
         <div class="input-field col s4">
@@ -33,7 +33,9 @@
         </div>
 
         <div class="col s1" style="margin-top: 25px;">
-          <a href="#"><i class="small material-icons">search</i></a>
+          <!-- <a class="btn-floating" type="submit"><i class="small material-icons">search</i></a> -->
+          <button class="btn-floating red lighten-2" id="submitBtn" type="submit"><i
+              class="small material-icons">search</i></button>
         </div>
       </div>
     </form>
@@ -47,24 +49,27 @@
         <li class="collection-header">
           <h5>Your School List</h5>
         </li>
-        <li>
+        <span class="school-container">
+
+        </span>
+        {{!-- <li>
           <a href="#!" class="collection-item black-text">Adelaide High School
             <p>Type: <span class="school-type">Secondary</span></p>
-            <p>State: <span class="school-type">SA</span></p>
+            <p>State: <span class="school-state">SA</span></p>
           </a>
         </li>
         <li>
           <a href="#!" class="collection-item black-text">Parkside Primary School
             <p>Type: <span class="school-type">Primary</span></p>
-            <p>State: <span class="school-type">SA</span></p>
+            <p>State: <span class="school-state">SA</span></p>
           </a>
         </li>
         <li>
           <a href="#!" class="collection-item black-text">Glenunga International High School
             <p>Type: <span class="school-type">Secondary</span></p>
-            <p>State: <span class="school-type">SA</span></p>
+            <p>State: <span class="school-state">SA</span></p>
           </a>
-        </li>
+        </li> --}}
       </ul>
     </div>
     <div class="col s12 m9">
@@ -75,6 +80,6 @@
 
 {{> footer }}
 
-<script defer type="text/javascript"
+<script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCh0hxF41vQ6-991NIvoKeI8AoOHgP4nZo"></script>
-<script defer type="text/javascript" src="/js/map-display.js"></script>
+<script type="text/javascript" src="/js/map-display.js"></script>

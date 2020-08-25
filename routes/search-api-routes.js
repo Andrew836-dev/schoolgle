@@ -41,15 +41,15 @@ module.exports = function(app) {
   app.post("/api/schools/name/:name", (req, res) => {
     const conditions = {
       schoolName: {
-        [Op.like]: req.params.name
+        [Op.like]: req.params.name + "%"
       }
     };
     if (req.body) {
       console.log(req.body);
     }
-    console.log("Searching : ", name);
+    console.log("Searching : ", req.params.name);
     db.School.findAll({
-      attributes: ["schoolName"],
+      // attributes: ["schoolName"],
       where: conditions
     }).then(dbNames => {
       res.json(dbNames);
