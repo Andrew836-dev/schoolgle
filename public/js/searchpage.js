@@ -1,4 +1,9 @@
 $(document).ready(() => {
+  $("select").formSelect();
+
+  // $.put("/api/schoolgle", {
+  //   schoolgleList: JSON.stringify(schoolgleList)
+  // });
   /*
    * declare map as a global variable
    */
@@ -162,5 +167,37 @@ $(document).ready(() => {
 
       return $newInputRow;
     }
+  });
+  let schoolgleList = [];
+  console.log("new page");
+  $.get("/api/user_data").then(data => {
+    schoolgleList = [JSON.parse(data.schoolgleList)];
+    console.log(schoolgleList);
+  });
+  $(document).on("click", ".schoolButton", function() {
+    console.log("in btn");
+    const id = parseInt($(this).attr("data-id"));
+    console.log(id);
+    schoolgleList.push(id);
+    console.log(schoolgleList);
+    console.log(JSON.stringify(schoolgleList));
+    // $.put("/api/user", {
+    //   schoolgleList: JSON.stringify(schoolgleList)
+    // });
+    $.ajax({
+      type: "PUT",
+      url: "http://localhost:8080/api/user",
+      contentType: "application/json",
+      schoolgleList: JSON.stringify(schoolgleList)
+    })
+      .done(() => {
+        console.log("SUCCESS");
+      })
+      .fail(() => {
+        console.log("FAIL");
+      })
+      .always(() => {
+        console.log("ALWAYS");
+      });
   });
 });
