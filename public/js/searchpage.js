@@ -184,20 +184,36 @@ $(document).ready(() => {
     // $.put("/api/user", {
     //   schoolgleList: JSON.stringify(schoolgleList)
     // });
-    $.ajax({
-      type: "PUT",
-      url: "http://localhost:8080/api/user",
-      contentType: "application/json",
-      schoolgleList: JSON.stringify(schoolgleList)
-    })
-      .done(() => {
-        console.log("SUCCESS");
-      })
-      .fail(() => {
-        console.log("FAIL");
-      })
-      .always(() => {
-        console.log("ALWAYS");
-      });
+    jQuery.each(["put", "delete"], (i, method) => {
+      jQuery[method] = function(url, data, callback, type) {
+        if (jQuery.isFunction(data)) {
+          type = type || callback;
+          callback = data;
+          data = undefined;
+        }
+
+        return jQuery.ajax({
+          url: url,
+          type: method,
+          dataType: type,
+          data: data,
+          success: callback
+        });
+      };
+    });
+
+    $.put(
+      "/api/user",
+      { schoolgleList: JSON.stringify(schoolgleList) },
+      result => {
+        console.log(result);
+      }
+    );
+    // $.ajax({
+    //   url: "/api/user",
+    //   type: "PUT",
+    //   contentType: "application/json",
+    //   data: { schoolgleList: JSON.stringify(schoolgleList) }
+    // });
   });
 });
