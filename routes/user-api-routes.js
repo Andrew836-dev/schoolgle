@@ -69,16 +69,29 @@ module.exports = function (app) {
     }
   });
 
-  app.put("/api/schoolgle", (req, res) => {
-    console.log(res);
-    console.log(req);
-    if (!req.user) {
+  // app.put("/api/schoolgle", (req, res) => {
+  //   console.log(res);
+  //   console.log(req);
+  //   if (!req.user) {
+  //     res.json({});
+  //   } else {
+  //     db.User.update({
+  //       attributes: {
+  //         schoolgleList: req.user.schoolgleList
+  //       },
+  //       where: {
+  //         id: req.user.id
+  //       }
+  //     }).then(data => {
+  //       res.json(data);
+  //     });
+  //   }
+  // });
+  app.put("/api/user", (req, res) => {
+    if (req.user) {
       res.json({});
     } else {
-      db.User.update({
-        attributes: {
-          schoolgleList: req.user.schoolgleList
-        },
+      db.User.update(req.body, {
         where: {
           id: req.user.id
         }
