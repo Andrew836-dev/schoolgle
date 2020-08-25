@@ -2,6 +2,7 @@
 const db = require("../models");
 const passport = require("../config/passport");
 
+// eslint-disable-next-line prettier/prettier
 module.exports = function (app) {
   // Using the passport.authenticate middleware with our local strategy.
   // If the user has valid login credentials, send them to the members page.
@@ -19,10 +20,10 @@ module.exports = function (app) {
   // otherwise send back an error
   app.post("/api/signup", (req, res) => {
     console.log(req.body);
-    // db.User.create(req.body)
+    db.User.create(req.body)
       .then(() => {
-      res.redirect(307, "/api/login");
-    })
+        res.redirect(307, "/api/login");
+      })
       .catch(err => {
         // Error handling to send a prettier response for invalid sign up attempts
         // Start with a generic error message
