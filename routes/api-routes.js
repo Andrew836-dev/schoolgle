@@ -2,7 +2,7 @@
 const db = require("../models");
 const passport = require("../config/passport");
 
-module.exports = function(app) {
+module.exports = function (app) {
   // Using the passport.authenticate middleware with our local strategy.
   // If the user has valid login credentials, send them to the members page.
   // Otherwise the user will be sent an error
@@ -19,10 +19,10 @@ module.exports = function(app) {
   // otherwise send back an error
   app.post("/api/signup", (req, res) => {
     console.log(req.body);
-    db.User.create(req.body)
+    // db.User.create(req.body)
       .then(() => {
-        res.redirect(307, "/api/login");
-      })
+      res.redirect(307, "/api/login");
+    })
       .catch(err => {
         // Error handling to send a prettier response for invalid sign up attempts
         // Start with a generic error message
@@ -79,4 +79,28 @@ module.exports = function(app) {
       res.json(dbSchools);
     });
   });
+
+  // app.get("/api/schools/:schoolType", (req, res) => {
+  //   schoolType = req.params.schoolType;
+  //   console.log("Searching : ", schoolType);
+  //   db.School.findAll({
+  //     where: {
+  //       schoolType: schoolType
+  //     }
+  //   }).then(dbSchools => {
+  //     res.json(dbSchools);
+  //   });
+  // });
+
+  // app.get("/api/schools/:state", (req, res) => {
+  //   state = req.params.state;
+  //   console.log("Searching : ", state);
+  //   db.School.findAll({
+  //     where: {
+  //       state: state
+  //     }
+  //   }).then(dbSchools => {
+  //     res.json(dbSchools);
+  //   });
+  // });
 };
