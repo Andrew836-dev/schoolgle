@@ -1,6 +1,7 @@
 // Requiring path to so we can use relative routes to our HTML files
 // Requiring our custom middleware for checking if a user is logged in
 const isAuthenticated = require("../config/middleware/isAuthenticated");
+const db = require("../models");
 
 module.exports = function(app) {
   app.get("/", (req, res) => {
@@ -22,7 +23,21 @@ module.exports = function(app) {
   // Here we've add our isAuthenticated middleware to this route.
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
   app.get("/account", isAuthenticated, (req, res) => {
-    res.render("account");
+    db.SchoolgleList.findAll({
+      where: {
+        "$SchoolgleList.UserId$": req.user.id
+      },
+      include: [
+        {
+          model: db.School,
+          required: true
+        }
+      ]
+    }).then(schools => {
+      console.log("returned object..............");
+      console.log(schools);
+      res.render("account", { school: schools });
+    });
   });
 
   app.get("/signup", (req, res) => {

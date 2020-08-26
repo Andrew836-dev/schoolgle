@@ -50,7 +50,7 @@ google.maps.event.addDomListener(window, "load", () => {
     const html = `
     <h6>${school.schoolName}</h6>
     <p>${school.schoolSector}, ${school.schoolType}</p>
-    <button class='schoolButton' data-id='${school.acaraSMLID}'>Add</button>`;
+    <button class='schoolButton' data-id='${school.id}'>Add</button>`;
     google.maps.event.addListener(marker, "click", function() {
       infoWindow.setContent(html);
       infoWindow.open(map, this);
