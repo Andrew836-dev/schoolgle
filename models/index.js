@@ -33,4 +33,20 @@ Object.keys(db).forEach(function(modelName) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// // NEW SQL CODE TO JOIN UP SCHOOL AND USER
+// db.school = require("./school.js")(sequelize, Sequelize);
+// db.user = require("./user.js")(sequelize, Sequelize);
+
+// db.user.belongsToMany(db.school, {
+//   through: "schoolgleList",
+//   as: "School",
+//   foreignKey: "userID"
+// });
+// db.school.belongsToMany(db.user, {
+//   through: "schoolgleList",
+//   as: "User",
+//   foreignKey: "schoolID"
+// });
+// // END OF NEW
+
 module.exports = db;

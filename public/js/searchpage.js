@@ -55,7 +55,7 @@ $(document).ready(() => {
       const html = `
     <h6>${school.schoolName}</h6>
     <p>${school.schoolSector}, ${school.schoolType}</p>
-    <button class='schoolButton' data-id='${school.acaraSMLID}'>Add</button>`;
+    <button class='schoolButton' data-id='${school.id}'>Add</button>`;
       google.maps.event.addListener(marker, "click", function() {
         infoWindow.setContent(html);
         infoWindow.open(map, this);
@@ -168,22 +168,10 @@ $(document).ready(() => {
       return $newInputRow;
     }
   });
-  let schoolgleList = [];
-  console.log("new page");
-  $.get("/api/user_data").then(data => {
-    schoolgleList = [JSON.parse(data.schoolgleList)];
-    console.log(schoolgleList);
-  });
   $(document).on("click", ".schoolButton", function() {
     console.log("in btn");
     const id = parseInt($(this).attr("data-id"));
     console.log(id);
-    schoolgleList.push(id);
-    console.log(schoolgleList);
-    console.log(JSON.stringify(schoolgleList));
-    // $.put("/api/user", {
-    //   schoolgleList: JSON.stringify(schoolgleList)
-    // });
     jQuery.each(["put", "delete"], (i, method) => {
       jQuery[method] = function(url, data, callback, type) {
         if (jQuery.isFunction(data)) {
@@ -202,18 +190,8 @@ $(document).ready(() => {
       };
     });
 
-    $.put(
-      "/api/user",
-      { schoolgleList: JSON.stringify(schoolgleList) },
-      result => {
-        console.log(result);
-      }
-    );
-    // $.ajax({
-    //   url: "/api/user",
-    //   type: "PUT",
-    //   contentType: "application/json",
-    //   data: { schoolgleList: JSON.stringify(schoolgleList) }
-    // });
+    $.put("/api/user", { schoolgleList: id }, result => {
+      console.log(result);
+    });
   });
 });
