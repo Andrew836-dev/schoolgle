@@ -63,9 +63,14 @@ module.exports = function (app) {
     } else {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea
-      const user = req.user;
-      user.password = "";
-      res.json(user);
+      db.User.findOne({
+        where: {
+          id: req.user.id
+        }
+      }).then(user => {
+        delete user.dataValues.password;
+        res.json(user);
+      });
     }
   });
 
@@ -88,22 +93,22 @@ module.exports = function (app) {
   //   }
   // });
   app.put("/api/user", (req, res) => {
-    console.log("PUT 555");
-    console.log("biz");
+    // console.log("PUT 555");
+    // console.log("biz");
     if (!req.user) {
-      console.log("PUT no");
+      // console.log("PUT no");
       res.json({});
     } else {
-      console.log("PUT yes");
-      console.log(req.body);
-      console.log(req.user.id);
+      // console.log("PUT yes");
+      // console.log(req.body);
+      // console.log(req.user.id);
       db.User.update(req.body, {
         where: {
           id: req.user.id
         }
       }).then(data => {
         res.json(data);
-        console.log(data);
+        // console.log(data);
       });
     }
   });

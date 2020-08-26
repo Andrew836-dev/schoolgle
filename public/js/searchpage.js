@@ -2,9 +2,6 @@
 $(document).ready(() => {
   $("select").formSelect();
 
-  // $.put("/api/schoolgle", {
-  //   schoolgleList: JSON.stringify(schoolgleList)
-  // });
   /*
    * declare map as a global variable
    */
@@ -14,10 +11,7 @@ $(document).ready(() => {
    * declare array for storing marker objects
    */
   const markerArray = [];
-  /*
-   * object for storing search conditions
-   */
-  // let conditions = {};
+
   /*
    * use google maps api built-in mechanism to attach dom events
    */
@@ -56,8 +50,9 @@ $(document).ready(() => {
       const html = `
     <h6>${school.schoolName}</h6>
     <p>${school.schoolSector}, ${school.schoolType}</p>
+    <p>${school.suburb}, ${school.postcode}</p>
     <button class='schoolButton' data-id='${school.acaraSMLID}'>Add</button>`;
-      google.maps.event.addListener(marker, "click", function () {
+      google.maps.event.addListener(marker, "click", function() {
         infoWindow.setContent(html);
         infoWindow.open(map, this);
         map.setCenter(this.position);
@@ -84,23 +79,44 @@ $(document).ready(() => {
       const searchTerm = $("#searchInput")
         .val()
         .trim();
-      const typeSearchTerm = $("#school-type")
-        .val()
-        .trim();
+      // const typeSearchTerm = getTypeTerm();
       console.log(searchTerm);
-      console.log(typeSearchTerm);
+      // console.log(typeSearchTerm);
+      clearAllMarkers();
       if (searchTerm.match(/\d{4}/g)) {
         getSchoolsByPostcode(searchTerm.match(/\d{4}/g));
       } else {
-        getSchoolsByName(searchTerm);
+        getSchoolsByName(searchTerm, {
+          schoolType: getTypeTerm(),
+          state: getStateTerm()
+        });
       }
-      getSchoolByType(typeSearchTerm);
+      // if we call this here it will add every school in the database of that type to the map as well
+      // getSchoolByType(typeSearchTerm);
     });
 
-    $schoolContainer.on("click", "li", function () {
+    $schoolContainer.on("click", "li", function() {
       const index = parseInt($(this).data("index"));
       map.setCenter(markerArray[index].position);
     });
+
+    // get the school type from the form and put it into sequelize format
+    function getTypeTerm() {
+      switch($("#school-type").val()){
+      case null:
+        return ["Primary", "Secondary", "Combined", "Special"];
+      default:
+        return [$("#school-type").val()];
+      }
+    }
+
+    // get the state fromthe form and put it into sequelize format
+    function getStateTerm() {
+      switch($("#state")) {
+      default:
+        return ["SA"];
+      }
+    }
 
     function getSchoolsByPostcode(postcode) {
       $.post("/api/schools/", {
@@ -108,13 +124,15 @@ $(document).ready(() => {
       }).then(addMarkers);
     }
 
-    function getSchoolsByName(schoolName) {
-      $.post("/api/schools/name/" + schoolName).then(addMarkers);
+    // schoolName here should be a string
+    // conditions is an object of the search conditions
+    function getSchoolsByName(schoolName, conditions) {
+      $.post("/api/schools/name/" + schoolName, conditions).then(addMarkers);
     }
 
-    function getSchoolByType(schoolType) {
-      $.post("/api/schools/type/" + schoolType).then(addMarkers);
-    }
+    // function getSchoolByType(schoolType) {
+    //   $.post("/api/schools/type/" + schoolType).then(addMarkers);
+    // }
 
     // function getSchoolsByType(schoolType) {
     //   $.get("/api/schools/" + schoolType, data => {
@@ -132,7 +150,6 @@ $(document).ready(() => {
     //   });
     // }
     function addMarkers(schoolData) {
-      clearAllMarkers();
       schoolData.forEach(school => {
         markerArray.push(createSchoolMarker(school));
       });
@@ -181,40 +198,40 @@ $(document).ready(() => {
   let schoolgleList = [];
   console.log("new page");
   $.get("/api/user_data").then(data => {
-    schoolgleList = [JSON.parse(data.schoolgleList)];
+    if (data.schoolgleList){
+      schoolgleList = data.schoolgleList.split(" ");
+    }
     console.log(schoolgleList);
   });
   $(document).on("click", ".schoolButton", function () {
     console.log("in btn");
-    const id = parseInt($(this).attr("data-id"));
+    const id = $(this).attr("data-id");
     console.log(id);
     schoolgleList.push(id);
-    console.log(schoolgleList);
-    console.log(JSON.stringify(schoolgleList));
     // $.put("/api/user", {
     //   schoolgleList: JSON.stringify(schoolgleList)
     // });
-    jQuery.each(["put", "delete"], (i, method) => {
-      jQuery[method] = function(url, data, callback, type) {
-        if (jQuery.isFunction(data)) {
-          type = type || callback;
-          callback = data;
-          data = undefined;
-        }
+    // jQuery.each(["put", "delete"], (i, method) => {
+    //   jQuery[method] = function(url, data, callback, type) {
+    //     if (jQuery.isFunction(data)) {
+    //       type = type || callback;
+    //       callback = data;
+    //       data = undefined;
+    //     }
 
-        return jQuery.ajax({
-          url: url,
-          type: method,
-          dataType: type,
-          data: data,
-          success: callback
-        });
-      };
-    });
+    //     return jQuery.ajax({
+    //       url: url,
+    //       type: method,
+    //       dataType: type,
+    //       data: data,
+    //       success: callback
+    //     });
+    //   };
+    // });
 
     $.put(
       "/api/user",
-      { schoolgleList: JSON.stringify(schoolgleList) },
+      { schoolgleList: schoolgleList.join(" ") },
       result => {
         console.log(result);
       }
