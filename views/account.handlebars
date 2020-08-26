@@ -18,31 +18,17 @@
             </tr>
         </thead>
         <tbody>
+            {{#each school}}
             <tr>
-                <td>Adelaide High</td>
-                <td>West Tce Adelaide</td>
-                <td>8</td>
-                <td>5/10</td>
-                <td>www.idontknow.com</td>
-                <td><a class="waves-effect waves-light btn"><i class="material-icons">delete_forever</i></a></td>
+                <td>{{dataValues.schoolName}}</td>
+                <td>{{dataValues.suburb}}, {{dataValues.postcode}}</td>
+                <td>{{dataValues.schoolSector}}</td>
+                <td>{{dataValues.schoolType}}</td>
+                <td>{{dataValues.schoolURL}}</td>
+                <td><a class="waves-effect waves-light btn" data-id="{{dataValues.acaraSMLID}}"><i class="material-icons">delete_forever</i></a></td>
 
             </tr>
-            <tr>
-                <td>Adelaide High</td>
-                <td>West Tce Adelaide</td>
-                <td>8</td>
-                <td>5/10</td>
-                <td>www.idontknow.com</td>
-                <td><a class="waves-effect waves-light btn"><i class="material-icons">delete_forever</i></a></td>
-            </tr>
-            <tr>
-                <td>Adelaide High</td>
-                <td>West Tce Adelaide</td>
-                <td>8</td>
-                <td>5/10</td>
-                <td>www.idontknow.com</td>
-                <td><a class="waves-effect waves-light btn"><i class="material-icons">delete_forever</i></a></td>
-            </tr>
+            {{/each}}
         </tbody>
     </table>
 </div>
@@ -54,5 +40,5 @@
 {{> footer}}
 
 <script defer type="text/javascript"
-    src="http://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCh0hxF41vQ6-991NIvoKeI8AoOHgP4nZo"></script>
+    src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCh0hxF41vQ6-991NIvoKeI8AoOHgP4nZo"></script>
 <script defer type="text/javascript" src="/js/map-display.js"></script>

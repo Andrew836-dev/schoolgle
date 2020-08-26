@@ -28,13 +28,13 @@ $(document).ready(() => {
     $.post("/api/login", {
       email: email,
       password: password
-    })
-      .then(() => {
-        window.location.replace("/search");
-        // If there's an error, log the error
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    }).then(() => {
+      window.location.replace("/search");
+      // If there's an error, log the error
+    }, handleLoginErr({ responseJSON: "Invalid email/password combination" }));
+  }
+  function handleLoginErr(err) {
+    $("#alert .msg").text(err.responseJSON);
+    $("#alert").fadeIn(500);
   }
 });
