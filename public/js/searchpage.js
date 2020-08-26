@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 $(document).ready(() => {
   $("select").formSelect();
 
@@ -79,19 +80,24 @@ $(document).ready(() => {
 
     $("#submitBtn").on("click", () => {
       event.preventDefault();
-      console.log("submitted");
+      // console.log("submitted");
       const searchTerm = $("#searchInput")
         .val()
         .trim();
+      const typeSearchTerm = $("#school-type")
+        .val()
+        .trim();
       console.log(searchTerm);
+      console.log(typeSearchTerm);
       if (searchTerm.match(/\d{4}/g)) {
         getSchoolsByPostcode(searchTerm.match(/\d{4}/g));
       } else {
         getSchoolsByName(searchTerm);
       }
+      getSchoolByType(typeSearchTerm);
     });
 
-    $schoolContainer.on("click", "li", function() {
+    $schoolContainer.on("click", "li", function () {
       const index = parseInt($(this).data("index"));
       map.setCenter(markerArray[index].position);
     });
@@ -104,6 +110,10 @@ $(document).ready(() => {
 
     function getSchoolsByName(schoolName) {
       $.post("/api/schools/name/" + schoolName).then(addMarkers);
+    }
+
+    function getSchoolByType(schoolType) {
+      $.post("/api/schools/type/" + schoolType).then(addMarkers);
     }
 
     // function getSchoolsByType(schoolType) {

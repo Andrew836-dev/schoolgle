@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // Requiring our models and passport as we've configured it
 // Plus the google maps client library
 const db = require("../models");
@@ -7,7 +8,7 @@ const mapsKey =
 const client = new Client({});
 const Op = db.Sequelize.Op;
 
-module.exports = function(app) {
+module.exports = function (app) {
   // Route for searching schools by conditions in the request body
   app.post("/api/schools/", (req, res) => {
     console.log("Searching : ", req.body);
@@ -53,6 +54,22 @@ module.exports = function(app) {
       where: conditions
     }).then(dbNames => {
       res.json(dbNames);
+    });
+  });
+
+  app.post("/api/schools/type/:type", (req, res) => {
+    const conditions = {
+      schoolType: req.params.type
+    };
+    if (req.body) {
+      console.log(req.body);
+    }
+    console.log("Searching : ", req.params.type);
+    db.School.findAll({
+      // attributes: ["schoolType"],
+      where: conditions
+    }).then(dbTypes => {
+      res.json(dbTypes);
     });
   });
 };
