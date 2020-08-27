@@ -179,5 +179,17 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 0
     }
   });
+
+  School.associate = function(models) {
+    //   // Associating School with SchoolgleList
+    //   // When an Author is deleted, also delete any associated Posts
+    School.belongsToMany(models.User, {
+      through: "SchoolgleList"
+    });
+    //   User.hasMany(models.SchoolgleList, {
+    //     onDelete: "cascade"
+    //   });
+    // };
+  };
   return School;
 };

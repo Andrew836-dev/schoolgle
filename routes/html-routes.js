@@ -27,12 +27,7 @@ module.exports = function(app) {
       where: {
         "$SchoolgleList.UserId$": req.user.id
       },
-      include: [
-        {
-          model: db.School,
-          required: true
-        }
-      ]
+      include: [db.School]
     }).then(schools => {
       console.log("returned object..............");
       console.log(schools);

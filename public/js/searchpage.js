@@ -75,7 +75,7 @@ $(document).ready(() => {
 
     $("#submitBtn").on("click", () => {
       event.preventDefault();
-      // console.log("submitted");
+      console.log("submitted");
       const searchTerm = $("#searchInput")
         .val()
         .trim();
@@ -120,7 +120,9 @@ $(document).ready(() => {
 
     function getSchoolsByPostcode(postcode) {
       $.post("/api/schools/", {
-        postcode: postcode
+        postcode: postcode,
+        schoolType: getTypeTerm(),
+        state: getStateTerm()
       }).then(addMarkers);
     }
 
@@ -195,59 +197,10 @@ $(document).ready(() => {
       return $newInputRow;
     }
   });
-<<<<<<< HEAD
-  let schoolgleList = [];
-  console.log("new page");
-  $.get("/api/user_data").then(data => {
-    if (data.schoolgleList){
-      schoolgleList = data.schoolgleList.split(" ");
-    }
-    console.log(schoolgleList);
-  });
-  $(document).on("click", ".schoolButton", function () {
-=======
   $(document).on("click", ".schoolButton", function() {
->>>>>>> 0eb949daaa9948db2929c5f51e2861dbc153c96a
     console.log("in btn");
     const id = $(this).attr("data-id");
     console.log(id);
-<<<<<<< HEAD
-    schoolgleList.push(id);
-    // $.put("/api/user", {
-    //   schoolgleList: JSON.stringify(schoolgleList)
-    // });
-    // jQuery.each(["put", "delete"], (i, method) => {
-    //   jQuery[method] = function(url, data, callback, type) {
-    //     if (jQuery.isFunction(data)) {
-    //       type = type || callback;
-    //       callback = data;
-    //       data = undefined;
-    //     }
-
-    //     return jQuery.ajax({
-    //       url: url,
-    //       type: method,
-    //       dataType: type,
-    //       data: data,
-    //       success: callback
-    //     });
-    //   };
-    // });
-
-    $.put(
-      "/api/user",
-      { schoolgleList: schoolgleList.join(" ") },
-      result => {
-        console.log(result);
-      }
-    );
-    // $.ajax({
-    //   url: "/api/user",
-    //   type: "PUT",
-    //   contentType: "application/json",
-    //   data: { schoolgleList: JSON.stringify(schoolgleList) }
-    // });
-=======
     jQuery.each(["put", "delete"], (i, method) => {
       jQuery[method] = function(url, data, callback, type) {
         if (jQuery.isFunction(data)) {
@@ -269,6 +222,5 @@ $(document).ready(() => {
     $.put("/api/user", { schoolgleList: id }, result => {
       console.log(result);
     });
->>>>>>> 0eb949daaa9948db2929c5f51e2861dbc153c96a
   });
 });
