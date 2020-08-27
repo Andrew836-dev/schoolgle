@@ -81,30 +81,45 @@ module.exports = function (app) {
       res.json({});
     } else {
       console.log("PUT yes");
-      console.log(parseInt(req.body.schoolgleList));
+      console.log(parseInt(req.body.school));
       console.log(req.user.id);
       userID = req.user.id;
-      schoolID = req.body.schoolgleList;
+      schoolID = req.body.school;
 
-      db.SchoolgleList.findOrCreate({
-        where: { UserId: userID, SchoolId: schoolID },
-        defaults: { UserId: userID, SchoolId: schoolID }
-      }).then(data => {
-        console.log("SchoolgleList updated");
-        res.json(data);
+      db.User.findOne({ where: { id: userID } }).then(user => {
+        db.School.findOne({ where: { id: schoolID } }).then(school => {
+          user.addSchool(school);
+        });
       });
+
+      // db.SchoolgleList.findOrCreate({
+      //   where: { UserId: userID, SchoolId: schoolID },
+      //   defaults: { UserId: userID, SchoolId: schoolID }
+      // }).then(data => {
+      //   console.log("SchoolgleList updated");
+      //   res.json(data);
+      // });
     }
   });
 
   app.delete("/api/user/list/:id", (req, res) => {
-    console.log(req.params.id);
-    db.SchoolgleList.destroy({
-      where: {
-        SchoolId: req.params.id,
-        userId: req.user.id
-      }
-    }).then(data => {
-      res.json(data);
+    userID = req.user.id;
+    schoolID = req.params.id;
+
+    db.User.findOne({ where: { id: userID } }).then(user => {
+      db.School.findOne({ where: { id: schoolID } }).then(school => {
+        user.removeSchool(school);
+        res.json(school);
+      });
     });
+    // console.log(req.params.id);
+    // db.SchoolgleList.destroy({
+    //   where: {
+    //     SchoolId: req.params.id,
+    //     userId: req.user.id
+    //   }
+    // }).then(data => {
+    //   res.json(data);
+    // });
   });
 };

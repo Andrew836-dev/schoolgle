@@ -201,7 +201,7 @@ $(document).ready(() => {
     //   };
     // });
 
-    $.put("/api/user", { schoolgleList: id }, result => {
+    $.put("/api/user", { school: id }, result => {
       console.log(result);
     });
   });
