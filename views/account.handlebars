@@ -24,13 +24,13 @@
         <a href=""></a>
         <tbody>
             {{#each school}}
-            <tr data-lat="{{School.dataValues.latitude}}" data-long="{{School.dataValues.longitude}}">
-                <td class="name">{{School.dataValues.schoolName}}</td>
-                <td class="address">{{School.dataValues.suburb}}, {{School.dataValues.postcode}}</td>
-                <td class="sector">{{School.dataValues.schoolSector}}</td>
-                <td class="type">{{School.dataValues.schoolType}}</td>
-                <td class="url"><a href="{{School.dataValues.schoolURL}}" target="_blank">{{School.dataValues.schoolURL}}</a></td>
-                <td id="btnIgnore"><a class="waves-effect waves-light btn" data-id="{{dataValues.SchoolId}}"><i
+            <tr data-lat="{{dataValues.latitude}}" data-long="{{dataValues.longitude}}">
+                <td>{{dataValues.schoolName}}</td>
+                <td>{{dataValues.suburb}}, {{dataValues.postcode}}</td>
+                <td>{{dataValues.schoolSector}}</td>
+                <td>{{dataValues.schoolType}}</td>
+                <td><a href="{{dataValues.schoolURL}}" target="_blank">{{dataValues.schoolURL}}</a></td>
+                <td id="btnIgnore"><a class="waves-effect waves-light btn" data-id="{{dataValues.id}}"><i
                             class="material-icons deleteBtn">delete_forever</i></a></td>
             </tr>
             {{/each}}

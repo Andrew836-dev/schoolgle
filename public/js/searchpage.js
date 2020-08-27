@@ -221,7 +221,7 @@ $(document).ready(() => {
     // console.log("in btn");
     const id = $(this).attr("data-id");
     // console.log(id);
-    $.put("/api/user", { schoolgleList: id }, result => {
+    $.put("/api/user", { school: id }, result => {
       console.log(result);
     });
   });

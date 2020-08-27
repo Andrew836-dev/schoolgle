@@ -23,16 +23,27 @@ module.exports = function(app) {
   // Here we've add our isAuthenticated middleware to this route.
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
   app.get("/account", isAuthenticated, (req, res) => {
-    db.SchoolgleList.findAll({
-      where: {
-        "$SchoolgleList.UserId$": req.user.id
-      },
-      include: [db.School]
+    db.School.findAll({
+      include: {
+        model: db.User,
+        where: { id: req.user.id }
+      }
     }).then(schools => {
       console.log("returned object..............");
       console.log(schools);
       res.render("account", { school: schools });
     });
+
+    // db.SchoolgleList.findAll({
+    //   where: {
+    //     "$SchoolgleList.UserId$": req.user.id
+    //   },
+    //   include: [db.School]
+    // }).then(schools => {
+    //   console.log("returned object..............");
+    //   console.log(schools);
+    //   res.render("account", { school: schools });
+    // });
   });
 
   app.get("/signup", (req, res) => {
