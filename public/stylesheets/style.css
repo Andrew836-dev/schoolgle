@@ -89,3 +89,11 @@ input::-webkit-inner-spin-button {
   right: 1rem;
   display: none;
 }
+#printBtn{
+  float: right;
+}
+@media print {
+  .deleteBtn {
+      display:none;
+    }
+  }

@@ -1,18 +1,22 @@
 {{> navTwo }}
-
 <div class="container">
 
     <h3><span class="account-name">USERNAME</span><span class="collegeo"> Schoolgle List</span></h3>
+    <button type="button" id="printBtn" onclick="printJS({printable: 'list', type: 'html', header: 'SchoolgleList'})">
+        <span class="material-icons">
+            print
+        </span>
+    </button>
 </div>
-<div class="container">
+<div class="container" id="list">
     <!-- Page Content goes here -->
     <table class="responsive-table">
         <thead>
             <tr>
                 <th>School</th>
                 <th>Address</th>
-                <th>Index</th>
-                <th>Rating</th>
+                <th>Sector</th>
+                <th>Type</th>
                 <th>Website</th>
                 <th></th>
             </tr>
