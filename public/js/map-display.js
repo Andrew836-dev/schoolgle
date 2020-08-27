@@ -45,12 +45,9 @@ google.maps.event.addDomListener(window, "load", () => {
       position: new google.maps.LatLng(school.latitude, school.longitude),
       map: map
       // the icon option can be used for a custom marker
-      // icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
+      // icon: "https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png"
     });
-    const html = `
-    <h6>${school.schoolName}</h6>
-    <p>${school.schoolSector}, ${school.schoolType}</p>
-    <button class='schoolButton' data-id='${school.id}'>Add</button>`;
+    const html = htmlGenerator[window.location.pathname](school);
     google.maps.event.addListener(marker, "click", function() {
       infoWindow.setContent(html);
       infoWindow.open(map, this);
@@ -58,6 +55,21 @@ google.maps.event.addDomListener(window, "load", () => {
     });
     return marker;
   }
+
+  const htmlGenerator = {
+    "/account": function(school) {
+      return `
+    <h6>${school.schoolName}</h6>
+    <p>${school.schoolSector}, ${school.schoolType}</p>
+    `;
+    },
+    "/search": function(school) {
+      return `
+      <h6>${school.schoolName}</h6>
+      <p>${school.schoolSector}, ${school.schoolType}</p>
+      <button class='schoolButton' data-id='${school.id}'>Add</button>`;
+    }
+  };
 
   /*
    * Clear all markers from the map

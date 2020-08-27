@@ -28,10 +28,12 @@ $(document).ready(() => {
     $.post("/api/login", {
       email: email,
       password: password
-    }).then(() => {
-      window.location.replace("/search");
-      // If there's an error, log the error
-    }, handleLoginErr({ responseJSON: "Invalid email/password combination" }));
+    })
+      .then(() => {
+        window.location.replace("/search");
+        // If there's an error, log the error
+      })
+      .catch(handleLoginErr);
   }
   function handleLoginErr(err) {
     $("#alert .msg").text(err.responseJSON);
