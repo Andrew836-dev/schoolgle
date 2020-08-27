@@ -24,9 +24,9 @@ Users must first sign up to the Schoolgle. After signing up, users can access th
 
 ## Screenshots
 
-![Landing Page](public\img\Screenshots\LandingPage.png)
-![Search Example](public\img\Screenshots\SearchExample.png)
-![SchoolgleList](public\img\Screenshots\SchoolgleListExample.png)
+![Landing Page](public/img/Screenshots/LandingPage.png)
+![Search Example](public/img/Screenshots/SearchExample.png)
+![SchoolgleList](public/img/Screenshots/SchoolgleListExample.png)
 
 ## License
 
@@ -44,8 +44,8 @@ The application has been tested however no formal tests have been written.
 
 Please contact us via our Github at:
 
-* [Andrew Gray](github.com/Andrew836-dev)
-* [Terry Moschos](github.com/EMoschos)
-* [Zan Hong Mok](github.com/ZanHong)
-* [Cynthia Yim](wongcmk)
-* [Ben Hilliard](BH-2312)
+* [Andrew Gray](http://www.github.com/Andrew836-dev)
+* [Terry Moschos](http://www.github.com/EMoschos)
+* [Zan Hong Mok](http://www.github.com/ZanHong)
+* [Cynthia Yim](http://www.github.com/wongcmk)
+* [Ben Hilliard](http://www.github.com/BH-2312)
