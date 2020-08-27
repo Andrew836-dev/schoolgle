@@ -48,11 +48,7 @@ $(document).ready(() => {
         // the icon option can be used for a custom marker
         // icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
       });
-      const html = `
-    <h6>${school.schoolName}</h6>
-    <p>${school.schoolSector}, ${school.schoolType}</p>
-    <p>${school.suburb}, ${school.postcode}</p>
-    <button class='schoolButton' data-id='${school.id}'>Add</button>`;
+      const html = htmlGenerator[window.location.pathname](school);
       google.maps.event.addListener(marker, "click", function () {
         infoWindow.setContent(html);
         infoWindow.open(map, this);
@@ -60,6 +56,21 @@ $(document).ready(() => {
       });
       return marker;
     }
+
+    const htmlGenerator = {
+      "/account": function (school) {
+        return `
+    <h6>${school.schoolName}</h6>
+    <p>${school.schoolSector}, ${school.schoolType}</p>
+    `;
+      },
+      "/search": function (school) {
+        return `
+      <h6>${school.schoolName}</h6>
+      <p>${school.schoolSector}, ${school.schoolType}</p>
+      <button class='schoolButton' data-id='${school.id}'>Add</button>`;
+      }
+    };
 
     /*
      * Clear all markers from the map
@@ -104,18 +115,18 @@ $(document).ready(() => {
     // get the school type from the form and put it into sequelize format
     function getTypeTerm() {
       switch ($("#school-type").val()) {
-        case null:
-          return ["Primary", "Secondary", "Combined", "Special"];
-        default:
-          return [$("#school-type").val()];
+      case null:
+        return ["Primary", "Secondary", "Combined", "Special"];
+      default:
+        return [$("#school-type").val()];
       }
     }
 
     // get the state fromthe form and put it into sequelize format
     function getStateTerm() {
       switch ($("#state")) {
-        default:
-          return ["SA"];
+      default:
+        return ["SA"];
       }
     }
 
@@ -178,30 +189,39 @@ $(document).ready(() => {
 
       return $newInputRow;
     }
+
+    const initMap = {
+      "/account": function() {
+        const schoolgleMarkers = [];
+        $("tr").each(function() {
+          if ($(this).children("td").length > 0){
+            schoolgleMarkers.push({
+              latitude: parseFloat($(this).data("lat")),
+              longitude: parseFloat($(this).data("long")),
+              schoolName: $(this).children("td")[0].textContent,
+              schoolType: $(this).children("td")[2].textContent,
+              schoolSector: $(this).children("td")[3].textContent
+            });
+          }
+        });
+        if (schoolgleMarkers.length > 0) {
+          addMarkers(schoolgleMarkers);
+        }
+      },
+        "/search": function() {
+          const searchTerm = $("#schoolSearch").data("postcode");
+          console.log(searchTerm);
+          getSchoolsByPostcode(searchTerm);
+          $("#searchInput").val(searchTerm);
+        }
+    };
+    initMap[window.location.pathname]();
   });
   $(document).on("click", ".schoolButton", function () {
-    console.log("in btn");
+    // console.log("in btn");
     const id = $(this).attr("data-id");
-    console.log(id);
-    // jQuery.each(["put", "delete"], (i, method) => {
-    //   jQuery[method] = function(url, data, callback, type) {
-    //     if (jQuery.isFunction(data)) {
-    //       type = type || callback;
-    //       callback = data;
-    //       data = undefined;
-    //     }
-
-    //     return jQuery.ajax({
-    //       url: url,
-    //       type: method,
-    //       dataType: type,
-    //       data: data,
-    //       success: callback
-    //     });
-    //   };
-    // });
-
-    $.put("/api/user", { school: id }, result => {
+    // console.log(id);
+    $.put("/api/user", { schoolgleList: id }, result => {
       console.log(result);
     });
   });

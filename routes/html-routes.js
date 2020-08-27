@@ -51,6 +51,6 @@ module.exports = function(app) {
   });
 
   app.get("/search", isAuthenticated, (req, res) => {
-    res.render("searchpage");
+    res.render("searchpage", { postcode: req.user.postcode });
   });
 };
