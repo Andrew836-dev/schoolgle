@@ -74,41 +74,24 @@ module.exports = function (app) {
     }
   });
 
-  // app.put("/api/schoolgle", (req, res) => {
-  //   console.log(res);
-  //   console.log(req);
-  //   if (!req.user) {
-  //     res.json({});
-  //   } else {
-  //     db.User.update({
-  //       attributes: {
-  //         schoolgleList: req.user.schoolgleList
-  //       },
-  //       where: {
-  //         id: req.user.id
-  //       }
-  //     }).then(data => {
-  //       res.json(data);
-  //     });
-  //   }
-  // });
   app.put("/api/user", (req, res) => {
-    // console.log("PUT 555");
-    // console.log("biz");
+    console.log("PUT route");
     if (!req.user) {
       // console.log("PUT no");
       res.json({});
     } else {
-      // console.log("PUT yes");
-      // console.log(req.body);
-      // console.log(req.user.id);
-      db.User.update(req.body, {
-        where: {
-          id: req.user.id
-        }
+      console.log("PUT yes");
+      console.log(parseInt(req.body.schoolgleList));
+      console.log(req.user.id);
+      userID = req.user.id;
+      schoolID = req.body.schoolgleList;
+
+      db.SchoolgleList.create({
+        UserId: userID,
+        SchoolId: schoolID
       }).then(data => {
+        console.log("SchoolgleList updated");
         res.json(data);
-        // console.log(data);
       });
     }
   });

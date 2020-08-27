@@ -51,7 +51,7 @@ $(document).ready(() => {
     <h6>${school.schoolName}</h6>
     <p>${school.schoolSector}, ${school.schoolType}</p>
     <p>${school.suburb}, ${school.postcode}</p>
-    <button class='schoolButton' data-id='${school.acaraSMLID}'>Add</button>`;
+    <button class='schoolButton' data-id='${school.id}'>Add</button>`;
       google.maps.event.addListener(marker, "click", function() {
         infoWindow.setContent(html);
         infoWindow.open(map, this);
@@ -195,6 +195,7 @@ $(document).ready(() => {
       return $newInputRow;
     }
   });
+<<<<<<< HEAD
   let schoolgleList = [];
   console.log("new page");
   $.get("/api/user_data").then(data => {
@@ -204,9 +205,13 @@ $(document).ready(() => {
     console.log(schoolgleList);
   });
   $(document).on("click", ".schoolButton", function () {
+=======
+  $(document).on("click", ".schoolButton", function() {
+>>>>>>> 0eb949daaa9948db2929c5f51e2861dbc153c96a
     console.log("in btn");
     const id = $(this).attr("data-id");
     console.log(id);
+<<<<<<< HEAD
     schoolgleList.push(id);
     // $.put("/api/user", {
     //   schoolgleList: JSON.stringify(schoolgleList)
@@ -242,5 +247,28 @@ $(document).ready(() => {
     //   contentType: "application/json",
     //   data: { schoolgleList: JSON.stringify(schoolgleList) }
     // });
+=======
+    jQuery.each(["put", "delete"], (i, method) => {
+      jQuery[method] = function(url, data, callback, type) {
+        if (jQuery.isFunction(data)) {
+          type = type || callback;
+          callback = data;
+          data = undefined;
+        }
+
+        return jQuery.ajax({
+          url: url,
+          type: method,
+          dataType: type,
+          data: data,
+          success: callback
+        });
+      };
+    });
+
+    $.put("/api/user", { schoolgleList: id }, result => {
+      console.log(result);
+    });
+>>>>>>> 0eb949daaa9948db2929c5f51e2861dbc153c96a
   });
 });
