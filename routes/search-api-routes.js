@@ -57,10 +57,10 @@ module.exports = function (app) {
     }
     console.log("Searching : ", req.params.name);
     db.School.findAll({
-      attributes: ["schoolName"],
+      // attributes: ["schoolName"],
       where: conditions
     }).then(dbNames => {
-      dbNames.forEach(name => console.log(name.dataValues));
+      // dbNames.forEach(name => console.log(name.dataValues));
       res.json(dbNames);
     });
   });

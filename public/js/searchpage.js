@@ -201,23 +201,23 @@ $(document).ready(() => {
     console.log("in btn");
     const id = $(this).attr("data-id");
     console.log(id);
-    jQuery.each(["put", "delete"], (i, method) => {
-      jQuery[method] = function(url, data, callback, type) {
-        if (jQuery.isFunction(data)) {
-          type = type || callback;
-          callback = data;
-          data = undefined;
-        }
+    // jQuery.each(["put", "delete"], (i, method) => {
+    //   jQuery[method] = function(url, data, callback, type) {
+    //     if (jQuery.isFunction(data)) {
+    //       type = type || callback;
+    //       callback = data;
+    //       data = undefined;
+    //     }
 
-        return jQuery.ajax({
-          url: url,
-          type: method,
-          dataType: type,
-          data: data,
-          success: callback
-        });
-      };
-    });
+    //     return jQuery.ajax({
+    //       url: url,
+    //       type: method,
+    //       dataType: type,
+    //       data: data,
+    //       success: callback
+    //     });
+    //   };
+    // });
 
     $.put("/api/user", { schoolgleList: id }, result => {
       console.log(result);
