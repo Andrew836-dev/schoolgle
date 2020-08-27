@@ -181,15 +181,10 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   School.associate = function(models) {
-    //   // Associating School with SchoolgleList
-    //   // When an Author is deleted, also delete any associated Posts
+    // Associating Schools to Users through SchoolgleList
     School.belongsToMany(models.User, {
       through: "SchoolgleList"
     });
-    //   User.hasMany(models.SchoolgleList, {
-    //     onDelete: "cascade"
-    //   });
-    // };
   };
   return School;
 };

@@ -2,7 +2,7 @@
 <div class="container">
 
     <h3 class="collegeo"><span class="account-name">USERNAME</span>'s Schoolgle List</h3>
-    <button type="button" id="printBtn" onclick="printJS({printable: 'list', type: 'html', header: 'SchoolgleList'})">
+    <button type="button" id="printBtn" onclick="printJS({printable: 'list', type: 'html', ignoreElements: ['btnIgnore'], header: 'SchoolgleList'})">
         <span class="material-icons">
             print
         </span>
@@ -25,11 +25,11 @@
         <tbody>
             {{#each school}}
             <tr data-lat="{{School.dataValues.latitude}}" data-long="{{School.dataValues.longitude}}">
-                <td>{{School.dataValues.schoolName}}</td>
-                <td>{{School.dataValues.suburb}}, {{School.dataValues.postcode}}</td>
-                <td>{{School.dataValues.schoolSector}}</td>
-                <td>{{School.dataValues.schoolType}}</td>
-                <td><a href="{{School.dataValues.schoolURL}}" target="_blank">{{School.dataValues.schoolURL}}</a></td>
+                <td class="name">{{School.dataValues.schoolName}}</td>
+                <td class="address">{{School.dataValues.suburb}}, {{School.dataValues.postcode}}</td>
+                <td class="sector">{{School.dataValues.schoolSector}}</td>
+                <td class="type">{{School.dataValues.schoolType}}</td>
+                <td class="url"><a href="{{School.dataValues.schoolURL}}" target="_blank">{{School.dataValues.schoolURL}}</a></td>
                 <td><a class="waves-effect waves-light btn" data-id="{{dataValues.SchoolId}}"><i
                             class="material-icons deleteBtn">delete_forever</i></a></td>
             </tr>
@@ -43,7 +43,3 @@
 
 
 {{> footer}}
-
-<script defer type="text/javascript"
-    src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCh0hxF41vQ6-991NIvoKeI8AoOHgP4nZo"></script>
-<script defer type="text/javascript" src="/js/map-display.js"></script>

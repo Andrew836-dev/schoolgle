@@ -64,14 +64,10 @@ module.exports = function(sequelize, DataTypes) {
     );
   });
   User.associate = function(models) {
-    //   // Associating School with SchoolgleList
+    // Associating User with School through SchoolgleList
     User.belongsToMany(models.School, {
       through: "SchoolgleList"
     });
-    //   User.hasMany(models.SchoolgleList, {
-    //     onDelete: "cascade"
-    //   });
-    // };
   };
   return User;
 };
