@@ -101,4 +101,9 @@ input::-webkit-inner-spin-button {
   .deleteBtn {
       display:none;
     }
-  }
+}
+
+.z-depth-5 {
+  background-color: rgb(000,000,000,0.3);
+  border-radius: 25px;
+}
