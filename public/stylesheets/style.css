@@ -47,6 +47,10 @@ form.login {
    #index-banner .section {
      top: 0;
    }
+   .collegeo {
+    /* font-family: 'Bungee', cursive; */
+    font-size: 48px;
+  }
  }
  
  .icon-block {
@@ -75,4 +79,13 @@ input::-webkit-inner-spin-button {
 
 .mapDiv {
   padding: 20px 0px;
+}
+
+#to-top {
+  height: 24px;
+  border-radius: 12px;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  display: none;
 }

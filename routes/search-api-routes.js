@@ -41,8 +41,15 @@ module.exports = function (app) {
   // Route for searching schools by name
   app.post("/api/schools/name/:name", (req, res) => {
     const conditions = {
-      schoolName: {
-        [Op.like]: req.params.name + "%"
+      [Op.and]: {
+        schoolName: {
+          [Op.like]: req.params.name + "%"
+        },
+        schoolType: {
+          [Op.or]: req.body.schoolType
+            ? req.body.schoolType
+            : ["Primary", "Secondary", "Combined", "Special"]
+        }
       }
     };
     if (req.body) {
@@ -53,6 +60,7 @@ module.exports = function (app) {
       // attributes: ["schoolName"],
       where: conditions
     }).then(dbNames => {
+      // dbNames.forEach(name => console.log(name.dataValues));
       res.json(dbNames);
     });
   });

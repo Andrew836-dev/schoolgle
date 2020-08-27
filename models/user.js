@@ -63,12 +63,15 @@ module.exports = function(sequelize, DataTypes) {
       null
     );
   });
-  // User.associate = function(models) {
-  //   // Associating School with SchoolgleList
-  //   // When an Author is deleted, also delete any associated Posts
-  //   User.hasMany(models.SchoolgleList, {
-  //     onDelete: "cascade"
-  //   });
-  // };
+  User.associate = function(models) {
+    //   // Associating School with SchoolgleList
+    User.belongsToMany(models.School, {
+      through: "SchoolgleList"
+    });
+    //   User.hasMany(models.SchoolgleList, {
+    //     onDelete: "cascade"
+    //   });
+    // };
+  };
   return User;
 };
