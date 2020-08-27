@@ -81,6 +81,11 @@ input::-webkit-inner-spin-button {
   padding: 20px 0px;
 }
 
+.school-container {
+  max-height: 390px;
+  overflow-y: scroll;
+}
+
 #to-top {
   height: 24px;
   border-radius: 12px;
