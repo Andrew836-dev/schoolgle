@@ -4,31 +4,17 @@
   <div class="row">
     <form class="col s12" id="schoolSearch">
       <div class=" row">
-        <div class="input-field col s3">
-          <input placeholder="Search By School Name or Suburb" id="searchInput" type="text" class="validate">
+        <div class="input-field col s5">
+          <input placeholder="Search By School Name or Postcode" id="searchInput" type="text" class="validate">
         </div>
 
-        <div class="input-field col s4">
+        <div class="input-field col s6">
           <select id="school-type">
             <option value="" disabled selected>School Type</option>
             <option value="Combined">Combined</option>
             <option value="Primary">Primary</option>
             <option value="Secondary">Secondary</option>
             <option value="Special">Special</option>
-          </select>
-        </div>
-
-        <div class="input-field col s4">
-          <select multiple id="state">
-            <option value="" disabled selected>State</option>
-            <option value="1">SA</option>
-            <option value="2">VIC</option>
-            <option value="3">NSW</option>
-            <option value="4">QLD</option>
-            <option value="5">ACT</option>
-            <option value="6">WA</option>
-            <option value="7">TAS</option>
-            <option value="8">NT</option>
           </select>
         </div>
 
@@ -49,27 +35,9 @@
         <li class="collection-header">
           <h5>Your School List</h5>
         </li>
-        <span class="school-container">
+        <div class="school-container">
 
-        </span>
-        {{!-- <li>
-          <a href="#!" class="collection-item black-text">Adelaide High School
-            <p>Type: <span class="school-type">Secondary</span></p>
-            <p>State: <span class="school-state">SA</span></p>
-          </a>
-        </li>
-        <li>
-          <a href="#!" class="collection-item black-text">Parkside Primary School
-            <p>Type: <span class="school-type">Primary</span></p>
-            <p>State: <span class="school-state">SA</span></p>
-          </a>
-        </li>
-        <li>
-          <a href="#!" class="collection-item black-text">Glenunga International High School
-            <p>Type: <span class="school-type">Secondary</span></p>
-            <p>State: <span class="school-state">SA</span></p>
-          </a>
-        </li> --}}
+        </div>
       </ul>
     </div>
     <div class="col s12 m9">
