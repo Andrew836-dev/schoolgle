@@ -86,9 +86,9 @@ module.exports = function (app) {
       userID = req.user.id;
       schoolID = req.body.schoolgleList;
 
-      db.SchoolgleList.create({
-        UserId: userID,
-        SchoolId: schoolID
+      db.SchoolgleList.findOrCreate({
+        where: { UserId: userID, SchoolId: schoolID },
+        defaults: { UserId: userID, SchoolId: schoolID }
       }).then(data => {
         console.log("SchoolgleList updated");
         res.json(data);
