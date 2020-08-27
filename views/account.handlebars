@@ -1,7 +1,7 @@
 {{> navTwo }}
 
 <div class="container">
-    
+
     <h3><span class="account-name">USERNAME</span><span class="collegeo"> Schoolgle List</span></h3>
 </div>
 <div class="container">
@@ -17,7 +17,7 @@
                 <th></th>
             </tr>
         </thead>
-<tbody>
+        <tbody>
             {{#each school}}
             <tr>
                 <td>{{School.dataValues.schoolName}}</td>
@@ -25,14 +25,15 @@
                 <td>{{School.dataValues.schoolSector}}</td>
                 <td>{{School.dataValues.schoolType}}</td>
                 <td>{{School.dataValues.schoolURL}}</td>
-                <td><a class="waves-effect waves-light btn" data-id="{{dataValues.SchoolId}}"><i class="material-icons">delete_forever</i></a></td>
+                <td><a class="waves-effect waves-light btn" data-id="{{dataValues.SchoolId}}"><i
+                            class="material-icons deleteBtn">delete_forever</i></a></td>
             </tr>
             {{/each}}
         </tbody>
     </table>
 </div>
 <div class="container mapDiv">
-{{> map}}
+    {{> map}}
 </div>
 
 
