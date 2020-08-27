@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable prettier/prettier */
 $(document).ready(() => {
   $("select").formSelect();
@@ -52,7 +53,7 @@ $(document).ready(() => {
     <p>${school.schoolSector}, ${school.schoolType}</p>
     <p>${school.suburb}, ${school.postcode}</p>
     <button class='schoolButton' data-id='${school.id}'>Add</button>`;
-      google.maps.event.addListener(marker, "click", function() {
+      google.maps.event.addListener(marker, "click", function () {
         infoWindow.setContent(html);
         infoWindow.open(map, this);
         map.setCenter(this.position);
@@ -95,26 +96,26 @@ $(document).ready(() => {
       // getSchoolByType(typeSearchTerm);
     });
 
-    $schoolContainer.on("click", "li", function() {
+    $schoolContainer.on("click", "li", function () {
       const index = parseInt($(this).data("index"));
       map.setCenter(markerArray[index].position);
     });
 
     // get the school type from the form and put it into sequelize format
     function getTypeTerm() {
-      switch($("#school-type").val()){
-      case null:
-        return ["Primary", "Secondary", "Combined", "Special"];
-      default:
-        return [$("#school-type").val()];
+      switch ($("#school-type").val()) {
+        case null:
+          return ["Primary", "Secondary", "Combined", "Special"];
+        default:
+          return [$("#school-type").val()];
       }
     }
 
     // get the state fromthe form and put it into sequelize format
     function getStateTerm() {
-      switch($("#state")) {
-      default:
-        return ["SA"];
+      switch ($("#state")) {
+        default:
+          return ["SA"];
       }
     }
 
@@ -132,25 +133,6 @@ $(document).ready(() => {
       $.post("/api/schools/name/" + schoolName, conditions).then(addMarkers);
     }
 
-    // function getSchoolByType(schoolType) {
-    //   $.post("/api/schools/type/" + schoolType).then(addMarkers);
-    // }
-
-    // function getSchoolsByType(schoolType) {
-    //   $.get("/api/schools/" + schoolType, data => {
-    //     console.log(data);
-    //     schools = data;
-    //     initRows();
-    //   });
-    // }
-
-    // function getSchoolsByState(state) {
-    //   $.get("/api/schools/" + state, data => {
-    //     console.log(data);
-    //     schools = data;
-    //     initRows();
-    //   });
-    // }
     function addMarkers(schoolData) {
       schoolData.forEach(school => {
         markerArray.push(createSchoolMarker(school));
@@ -197,7 +179,7 @@ $(document).ready(() => {
       return $newInputRow;
     }
   });
-  $(document).on("click", ".schoolButton", function() {
+  $(document).on("click", ".schoolButton", function () {
     console.log("in btn");
     const id = $(this).attr("data-id");
     console.log(id);
