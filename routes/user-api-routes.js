@@ -90,4 +90,15 @@ module.exports = function (app) {
       });
     }
   });
+
+  app.delete("/api/user/list/:id", (req, res) => {
+    console.log(req.params.id);
+    db.SchoolgleList.destroy({
+      where: {
+        SchoolId: req.params.id
+      }
+    }).then(data => {
+      res.json(data);
+    });
+  });
 };
