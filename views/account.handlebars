@@ -1,7 +1,7 @@
 {{> navTwo }}
 <div class="container">
 
-    <h3><span class="account-name">USERNAME</span><span class="collegeo"> Schoolgle List</span></h3>
+    <h3 class="collegeo"><span class="account-name">USERNAME</span>'s Schoolgle List</h3>
     <button type="button" id="printBtn" onclick="printJS({printable: 'list', type: 'html', header: 'SchoolgleList'})">
         <span class="material-icons">
             print
@@ -21,14 +21,15 @@
                 <th></th>
             </tr>
         </thead>
+        <a href=""></a>
         <tbody>
             {{#each school}}
-            <tr>
+            <tr data-lat="{{School.dataValues.latitude}}" data-long="{{School.dataValues.longitude}}">
                 <td>{{School.dataValues.schoolName}}</td>
                 <td>{{School.dataValues.suburb}}, {{School.dataValues.postcode}}</td>
                 <td>{{School.dataValues.schoolSector}}</td>
                 <td>{{School.dataValues.schoolType}}</td>
-                <td>{{School.dataValues.schoolURL}}</td>
+                <td><a href="{{School.dataValues.schoolURL}}" target="_blank">{{School.dataValues.schoolURL}}</a></td>
                 <td><a class="waves-effect waves-light btn" data-id="{{dataValues.SchoolId}}"><i
                             class="material-icons deleteBtn">delete_forever</i></a></td>
             </tr>
