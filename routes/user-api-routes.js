@@ -100,7 +100,8 @@ module.exports = function (app) {
     console.log(req.params.id);
     db.SchoolgleList.destroy({
       where: {
-        SchoolId: req.params.id
+        SchoolId: req.params.id,
+        userId: req.user.id
       }
     }).then(data => {
       res.json(data);
