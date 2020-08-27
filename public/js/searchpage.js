@@ -190,47 +190,37 @@ $(document).ready(() => {
       return $newInputRow;
     }
 
-    function accountPageInit() {
-      const schoolgleMarkers = [];
-      $("tr").each(function() {
-        console.log($(this).children("td")[0]);
-        schoolgleMarkers.push({
-          latitude: parseFloat($(this).data("lat")),
-          longitude: parseFloat($(this).data("long")),
-          schoolName: $(this).children("td")[0].text(),
-          schoolType: $(this).children("td").text(),
-          schoolSector: $(this).children()[3].text
+    const initMap = {
+      "/account": function() {
+        const schoolgleMarkers = [];
+        $("tr").each(function() {
+          if ($(this).children("td").length > 0){
+            schoolgleMarkers.push({
+              latitude: parseFloat($(this).data("lat")),
+              longitude: parseFloat($(this).data("long")),
+              schoolName: $(this).children("td")[0].textContent,
+              schoolType: $(this).children("td")[2].textContent,
+              schoolSector: $(this).children("td")[3].textContent
+            });
+          }
         });
-      });
-      if (schoolgleMarkers.length > 1) {
-        addMarkers(schoolgleMarkers.slice(1));
-      }
-    }
-  
-    accountPageInit();
+        if (schoolgleMarkers.length > 0) {
+          addMarkers(schoolgleMarkers);
+        }
+      },
+        "/search": function() {
+          const searchTerm = $("#schoolSearch").data("postcode");
+          console.log(searchTerm);
+          getSchoolsByPostcode(searchTerm);
+          $("#searchInput").val(searchTerm);
+        }
+    };
+    initMap[window.location.pathname]();
   });
   $(document).on("click", ".schoolButton", function () {
-    console.log("in btn");
+    // console.log("in btn");
     const id = $(this).attr("data-id");
-    console.log(id);
-    // jQuery.each(["put", "delete"], (i, method) => {
-    //   jQuery[method] = function(url, data, callback, type) {
-    //     if (jQuery.isFunction(data)) {
-    //       type = type || callback;
-    //       callback = data;
-    //       data = undefined;
-    //     }
-
-    //     return jQuery.ajax({
-    //       url: url,
-    //       type: method,
-    //       dataType: type,
-    //       data: data,
-    //       success: callback
-    //     });
-    //   };
-    // });
-    
+    // console.log(id);
     $.put("/api/user", { schoolgleList: id }, result => {
       console.log(result);
     });
