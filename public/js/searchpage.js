@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable prettier/prettier */
 $(document).ready(() => {
   $("select").formSelect();
@@ -143,25 +144,6 @@ $(document).ready(() => {
       $.post("/api/schools/name/" + schoolName, conditions).then(addMarkers);
     }
 
-    // function getSchoolByType(schoolType) {
-    //   $.post("/api/schools/type/" + schoolType).then(addMarkers);
-    // }
-
-    // function getSchoolsByType(schoolType) {
-    //   $.get("/api/schools/" + schoolType, data => {
-    //     console.log(data);
-    //     schools = data;
-    //     initRows();
-    //   });
-    // }
-
-    // function getSchoolsByState(state) {
-    //   $.get("/api/schools/" + state, data => {
-    //     console.log(data);
-    //     schools = data;
-    //     initRows();
-    //   });
-    // }
     function addMarkers(schoolData) {
       schoolData.forEach(school => {
         markerArray.push(createSchoolMarker(school));
