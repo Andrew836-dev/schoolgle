@@ -47,18 +47,29 @@ $(document).ready(() => {
         // the icon option can be used for a custom marker
         // icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
       });
-      const html = `
-    <h6>${school.schoolName}</h6>
-    <p>${school.schoolSector}, ${school.schoolType}</p>
-    <p>${school.suburb}, ${school.postcode}</p>
-    <button class='schoolButton' data-id='${school.id}'>Add</button>`;
-      google.maps.event.addListener(marker, "click", function() {
+      const html = htmlGenerator[window.location.pathname](school);
+      google.maps.event.addListener(marker, "click", function () {
         infoWindow.setContent(html);
         infoWindow.open(map, this);
         map.setCenter(this.position);
       });
       return marker;
     }
+
+    const htmlGenerator = {
+      "/account": function (school) {
+        return `
+    <h6>${school.schoolName}</h6>
+    <p>${school.schoolSector}, ${school.schoolType}</p>
+    `;
+      },
+      "/search": function (school) {
+        return `
+      <h6>${school.schoolName}</h6>
+      <p>${school.schoolSector}, ${school.schoolType}</p>
+      <button class='schoolButton' data-id='${school.id}'>Add</button>`;
+      }
+    };
 
     /*
      * Clear all markers from the map
@@ -95,14 +106,14 @@ $(document).ready(() => {
       // getSchoolByType(typeSearchTerm);
     });
 
-    $schoolContainer.on("click", "li", function() {
+    $schoolContainer.on("click", "li", function () {
       const index = parseInt($(this).data("index"));
       map.setCenter(markerArray[index].position);
     });
 
     // get the school type from the form and put it into sequelize format
     function getTypeTerm() {
-      switch($("#school-type").val()){
+      switch ($("#school-type").val()) {
       case null:
         return ["Primary", "Secondary", "Combined", "Special"];
       default:
@@ -112,7 +123,7 @@ $(document).ready(() => {
 
     // get the state fromthe form and put it into sequelize format
     function getStateTerm() {
-      switch($("#state")) {
+      switch ($("#state")) {
       default:
         return ["SA"];
       }
@@ -196,8 +207,27 @@ $(document).ready(() => {
 
       return $newInputRow;
     }
+
+    function accountPageInit() {
+      const schoolgleMarkers = [];
+      $("tr").each(function() {
+        console.log($(this).children("td")[0]);
+        schoolgleMarkers.push({
+          latitude: parseFloat($(this).data("lat")),
+          longitude: parseFloat($(this).data("long")),
+          schoolName: $(this).children("td")[0].text(),
+          schoolType: $(this).children("td").text(),
+          schoolSector: $(this).children()[3].text
+        });
+      });
+      if (schoolgleMarkers.length > 1) {
+        addMarkers(schoolgleMarkers.slice(1));
+      }
+    }
+  
+    accountPageInit();
   });
-  $(document).on("click", ".schoolButton", function() {
+  $(document).on("click", ".schoolButton", function () {
     console.log("in btn");
     const id = $(this).attr("data-id");
     console.log(id);
@@ -218,7 +248,7 @@ $(document).ready(() => {
     //     });
     //   };
     // });
-
+    
     $.put("/api/user", { schoolgleList: id }, result => {
       console.log(result);
     });

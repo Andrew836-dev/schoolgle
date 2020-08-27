@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "HiAll08",
-    "database": "schoolgle_db",
+    "password": "abc121",
+    "database": "burgers_db",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
