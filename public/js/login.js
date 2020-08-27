@@ -36,7 +36,8 @@ $(document).ready(() => {
       .catch(handleLoginErr);
   }
   function handleLoginErr(err) {
-    $("#alert .msg").text(err.responseJSON);
+    console.log(err.responseText);
+    $("#alert .msg").text("Invalid email/password");
     $("#alert").fadeIn(500);
   }
 });
