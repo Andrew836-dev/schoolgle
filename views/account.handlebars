@@ -2,7 +2,7 @@
 <div class="container">
 
     <h3 class="collegeo"><span class="account-name">USERNAME</span>'s Schoolgle List</h3>
-    <button type="button" id="printBtn" onclick="printJS({printable: 'list', type: 'html', ignoreElements: ['btnIgnore'], header: 'SchoolgleList'})">
+    <button type="button" id="printBtn" class="right hide-on-med-and-down" onclick="printJS({printable: 'list', type: 'html', ignoreElements: ['btnIgnore'], header: 'SchoolgleList'})">
         <span class="material-icons">
             print
         </span>
@@ -16,7 +16,7 @@
                 <th>School</th>
                 <th>Address</th>
                 <th>Sector</th>
-                <th>Type</th>
+                <th>Year Range</th>
                 <th>Website</th>
                 <th></th>
             </tr>
@@ -24,11 +24,11 @@
         <a href=""></a>
         <tbody>
             {{#each school}}
-            <tr data-lat="{{dataValues.latitude}}" data-long="{{dataValues.longitude}}">
+            <tr data-lat="{{dataValues.latitude}}" data-long="{{dataValues.longitude}}" data-teachersFTE="{{dataValues.teachingStaffFTE}}" data-enrolmentsFTE="{{dataValues.enrolmentsFTE}}" data-enrolments="{{dataValues.enrolmentsTotal}}">
                 <td>{{dataValues.schoolName}}</td>
                 <td>{{dataValues.suburb}}, {{dataValues.postcode}}</td>
-                <td>{{dataValues.schoolSector}}</td>
-                <td>{{dataValues.schoolType}}</td>
+                <td>{{dataValues.schoolSector}}, {{dataValues.schoolType}}</td>
+                <td>{{dataValues.yearRange}}</td>
                 <td><a href="{{dataValues.schoolURL}}" target="_blank">{{dataValues.schoolURL}}</a></td>
                 <td id="btnIgnore"><a class="waves-effect waves-light btn" data-id="{{dataValues.id}}"><i
                             class="material-icons deleteBtn">delete_forever</i></a></td>
