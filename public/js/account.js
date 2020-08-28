@@ -5,12 +5,10 @@ $(document).ready(() => {
     $(".account-name").text(data.firstName);
   });
 
-  $(document).on("click", "i.deleteBtn", deleteSchoogleList);
+  $(document).on("click", "a.deleteBtn", deleteSchoogleList);
 
   function deleteSchoogleList() {
-    const currentId = $(this)
-      .parent()
-      .data("id");
+    const currentId = $(this).data("id");
     // console.log(currentId);
     $.ajax({
       method: "DELETE",
