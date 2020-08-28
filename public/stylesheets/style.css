@@ -103,3 +103,8 @@ input::-webkit-inner-spin-button {
 .seachList {
   margin: 0px;
 }
+
+.badge {
+  font-weight: bold !important;
+  
+}
