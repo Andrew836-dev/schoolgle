@@ -11,7 +11,7 @@ $(document).ready(() => {
     const currentId = $(this)
       .parent()
       .data("id");
-    console.log(currentId);
+    // console.log(currentId);
     $.ajax({
       method: "DELETE",
       url: "/api/user/list/" + currentId

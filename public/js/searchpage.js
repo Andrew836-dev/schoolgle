@@ -61,7 +61,9 @@ $(document).ready(() => {
       "/account": function (school) {
         return `
     <h6>${school.schoolName}</h6>
-    <p>${school.schoolSector}, ${school.schoolType}</p>
+    <p>${school.schoolSector}, ${school.yearRange}</p>
+    <p>Student/Teacher Ratio: ${(school.enrolmentsFTE / school.teachingStaffFTE).toFixed(1)}</p>
+    <p>Total students: ${school.enrolmentsTotal}</p>
     `;
       },
       "/search": function (school) {
@@ -199,11 +201,15 @@ $(document).ready(() => {
               latitude: parseFloat($(this).data("lat")),
               longitude: parseFloat($(this).data("long")),
               schoolName: $(this).children("td")[0].textContent,
-              schoolType: $(this).children("td")[2].textContent,
-              schoolSector: $(this).children("td")[3].textContent
+              yearRange: $(this).children("td")[2].textContent,
+              schoolSector: $(this).children("td")[3].textContent,
+              enrolmentsTotal: parseInt($(this).data("enrolments")),
+              enrolmentsFTE: parseFloat($(this).data("enrolmentsfte")),
+              teachingStaffFTE: parseFloat($(this).data("teachersfte"))
             });
           }
         });
+        console.log(schoolgleMarkers);
         if (schoolgleMarkers.length > 0) {
           addMarkers(schoolgleMarkers);
         }

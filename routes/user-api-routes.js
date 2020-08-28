@@ -89,6 +89,7 @@ module.exports = function (app) {
       db.User.findOne({ where: { id: userID } }).then(user => {
         db.School.findOne({ where: { id: schoolID } }).then(school => {
           user.addSchool(school);
+          res.json(school);
         });
       });
 

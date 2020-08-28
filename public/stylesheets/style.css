@@ -1,75 +1,60 @@
-form#signup,
-form.login {
-  margin-top: 50px;
-}
-
-
 /* STYLING FOR LANDING PAGE */
 /**
  * Use this file to override Materialize files so you can update
  * the core Materialize files in the future
  */
 
- nav ul a,
- nav .brand-logo {
-   color: #444;
- }
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
  
- p {
-   line-height: 2rem;
- }
- 
- .sidenav-trigger {
-   color: #26a69a;
- }
- 
- .parallax-container {
-   min-height: 380px;
-   line-height: 0;
-   height: auto;
-   color: rgba(255,255,255,.9);
- }
-   .parallax-container .section {
-     width: 100%;
-   }
- 
- @media only screen and (max-width : 992px) {
-   .parallax-container .section {
-     position: absolute;
-     top: 40%;
-   }
-   #index-banner .section {
-     top: 10%;
-   }
- }
- 
- @media only screen and (max-width : 600px) {
-   #index-banner .section {
-     top: 0;
-   }
-   .collegeo {
-    /* font-family: 'Bungee', cursive; */
-    font-size: 48px;
-  }
- }
- 
- .icon-block {
-   padding: 0 15px;
- }
- .icon-block .material-icons {
-   font-size: inherit;
- }
- 
- footer.page-footer {
-   margin: 0;
- }
- 
- .collegeo {
-   font-family: 'Bungee', cursive;
-   /* font-size: 48px; */
- }
+.sidenav-trigger {
+  color: #26a69a;
+}
 
- /* END OF STYLING FOR LANDING PAGE */
+p {
+  line-height: 2rem;
+}
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+
+.parallax-container .section {
+  width: 100%;
+}
+
+form#signup,
+form.login {
+  margin-top: 50px;
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+
+.collegeo {
+  font-family: 'Bungee', cursive;
+  /* font-size: 48px; */
+}
+
+.z-depth-5 {
+  background-color: rgb(000,000,000,0.3);
+  border-radius: 25px;
+}
+
+/* END OF STYLING FOR LANDING PAGE */
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -94,16 +79,23 @@ input::-webkit-inner-spin-button {
   right: 1rem;
   display: none;
 }
-#printBtn{
-  float: right;
-}
-@media print {
-  .deleteBtn {
-      display:none;
-    }
-}
 
-.z-depth-5 {
-  background-color: rgb(000,000,000,0.3);
-  border-radius: 25px;
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+ 
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+  .collegeo {
+   /* font-family: 'Bungee', cursive; */
+   font-size: 48px;
+ }
 }

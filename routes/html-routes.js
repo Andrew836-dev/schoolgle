@@ -29,8 +29,15 @@ module.exports = function(app) {
         where: { id: req.user.id }
       }
     }).then(schools => {
-      console.log("returned object..............");
-      console.log(schools);
+      // console.log("returned object..............");
+      // console.log(schools);
+      console.log(
+        "User = ",
+        req.user.id,
+        ", ",
+        schools.length,
+        "saved schools."
+      );
       res.render("account", { school: schools });
     });
 
