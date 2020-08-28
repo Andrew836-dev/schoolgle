@@ -99,3 +99,7 @@ input::-webkit-inner-spin-button {
    font-size: 48px;
  }
 }
+
+.seachList {
+  margin: 0px;
+}

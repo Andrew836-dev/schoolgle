@@ -176,14 +176,14 @@ $(document).ready(() => {
           "'>",
           "<a href='#!' class='collection-item black-text'>",
           schools.schoolName,
-          "<p>Type: <span class='school-type'>",
+          "<p class='seachList'>Type: <span class='school-type'>",
           schools.schoolType,
           "</span></p>",
-          "<p>State: <span class='school-type'>",
+          "<p class='seachList'>State: <span class='school-type'>",
           schools.state,
           "</span></p>",
           "</a>",
-          "</li>"
+          "</li>","<div class='divider'></div>"
         ].join("")
       );
 
