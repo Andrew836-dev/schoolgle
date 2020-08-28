@@ -229,6 +229,10 @@ $(document).ready(() => {
     // console.log(id);
     $.put("/api/user", { school: id }, result => {
       console.log(result);
+      //Update the badge number by calling database and entering data
+      $.get("/api/user_data").then(data => {
+        $(".badge").text(data.schoolgleList);
+      });
     });
   });
 });

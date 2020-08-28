@@ -69,7 +69,16 @@ module.exports = function (app) {
         }
       }).then(user => {
         delete user.dataValues.password;
-        res.json(user);
+        db.School.findAll({
+          include: {
+            model: db.User,
+            where: { id: req.user.id }
+          }
+        }).then(lists => {
+          user.dataValues.schoolgleList = lists.length;
+          res.json(user);
+          console.log(user.dataValues.schoolgleList);
+        });
       });
     }
   });
