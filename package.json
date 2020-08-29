@@ -42,5 +42,9 @@
   "bugs": {
     "url": "https://github.com/Andrew836-dev/project2/issues"
   },
-  "homepage": "https://github.com/Andrew836-dev/project2#readme"
+  "homepage": "https://github.com/Andrew836-dev/project2#readme",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  }
 }
