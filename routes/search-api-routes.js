@@ -3,8 +3,7 @@
 // Plus the google maps client library
 const db = require("../models");
 const { Client } = require("@googlemaps/google-maps-services-js");
-const mapsKey =
-  process.env.MAPS_API || "AIzaSyDUY_bM0I-lgMSBK8EPtYt71RRqHWRClMc";
+const mapsKey = process.env.MAPS_API;
 const client = new Client({});
 const Op = db.Sequelize.Op;
 
