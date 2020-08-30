@@ -33,6 +33,11 @@ $(document).ready(() => {
     });
 
     /*
+     * Geocoder is for changing addresses to co-ordinates and vice-versa
+     */
+    const Geocoder = new google.maps.Geocoder();
+
+    /*
      * create infowindow (which will be used by markers)
      */
     const infoWindow = new google.maps.InfoWindow();
@@ -63,63 +68,45 @@ $(document).ready(() => {
       new google.maps.LatLng(-24.9885453, 142.3494848)
     );
 
-    const htmlGenerator = {
-      "/account": function(school) {
-        return `
-    <h6>${school.schoolName}</h6>
-    <p>${school.schoolSector}, ${school.yearRange}</p>
-    <p>Student/Teacher Ratio: ${(
-      school.enrolmentsFTE / school.teachingStaffFTE
-    ).toFixed(1)}</p>
-    <p>Total students: ${school.enrolmentsTotal}</p>
-    `;
-      },
-      "/search": function(school) {
-        return `
-      <h6>${school.schoolName}</h6>
-      <p>${school.schoolSector}, ${school.schoolType}</p>
-      <button class='schoolButton' data-id='${school.id}'>Add</button>`;
-      }
-    };
-
     /*
      * Clear all markers from the map
      */
     function clearAllMarkers() {
-      markerArray.forEach(marker => marker.setMap(null));
-      markerArray.length = 0;
+      while (markerArray.length > 0) {
+        clearThisMarker(markerArray[0]);
+      }
     }
-    // map.setCenter(markerArray[0].position);
-    // $("select").formSelect();
+
+    function clearThisMarker(marker) {
+      marker.setMap(null);
+      markerArray.splice(markerArray.indexOf(marker), 1);
+    }
+
     const $schoolContainer = $(".school-container");
 
     $("#submitBtn").on("click", () => {
       event.preventDefault();
-      console.log("submitted");
       let searchTerm = $("#searchInput")
         .val()
         .trim();
-      // const typeSearchTerm = getTypeTerm();
-      console.log(searchTerm);
-      // console.log(typeSearchTerm);
       clearAllMarkers();
       if (searchTerm.match(/\d{4}/g)) {
         searchTerm = searchTerm.match(/\d{4}/g);
-        getSchoolsByPostcode(searchTerm).then(dbResponse => {
-          if (dbResponse.length > 0) {
-            addMarkers(dbResponse);
-          } else {
-            getLatLngFromPostcode(searchTerm);
-            $schoolContainer.prepend(`
-              <li>
-                <a class='collection-item black-text' href='#!'>
-                  <p class='seachList'>No results for that postcode</p>
-                  <p class='seachList'>Checking google</p>
-                </a>
-              </li>
-              <div class='divider'></div>`);
-          }
-        });
+        // getSchoolsByPostcode(searchTerm).then(dbResponse => {
+        //   if (dbResponse.length > 0) {
+        //     addMarkers(dbResponse);
+        //   } else {
+        getLatLngFromPostcode(searchTerm);
+        // $schoolContainer.prepend(`
+        //   <li>
+        //     <a class='collection-item black-text' href='#!'>
+        //       <p class='seachList'>No results for that postcode</p>
+        //       <p class='seachList'>Checking google</p>
+        //     </a>
+        //   </li>
+        //   <div class='divider'></div>`);
+        //   }
+        // });
       } else {
         getSchoolsByName(searchTerm).then(addMarkers);
       }
@@ -152,8 +139,7 @@ $(document).ready(() => {
     }
 
     function getLatLngFromPostcode(postcode) {
-      const myGeocoder = new google.maps.Geocoder();
-      myGeocoder.geocode(
+      Geocoder.geocode(
         {
           address: postcode.toString(),
           // region: "AU"
@@ -164,6 +150,10 @@ $(document).ready(() => {
             const lat = data[0].geometry.location.lat();
             const lng = data[0].geometry.location.lng();
             getSchoolsByDistance(lat, lng);
+          } else {
+            $schoolContainer.prepend(
+              "<li class='collection-item'> Could not find any results </li>"
+            );
           }
         }
       );
@@ -175,10 +165,7 @@ $(document).ready(() => {
       });
       if (markerArray.length) {
         map.setCenter(markerArray[0].position);
-      } else {
-        // make an error message display
       }
-      // schools = schoolData;
       initRows(schoolData);
     }
 
@@ -219,16 +206,14 @@ $(document).ready(() => {
     const initMap = {
       "/account": function() {
         const schoolgleMarkers = accountInit();
-        // console.log(schoolgleMarkers);
         if (schoolgleMarkers.length > 0) {
           addMarkers(schoolgleMarkers);
         }
       },
       "/search": function() {
         const searchTerm = $("#schoolSearch").data("postcode");
-        // console.log(searchTerm);
         if (searchTerm) {
-          getSchoolsByPostcode(searchTerm).then(addMarkers);
+          getLatLngFromPostcode(searchTerm); //.then(addMarkers);
           $("#searchInput").val(searchTerm);
         }
       }
@@ -236,11 +221,8 @@ $(document).ready(() => {
     initMap[window.location.pathname]();
   });
   $(document).on("click", ".schoolButton", function() {
-    // console.log("in btn");
     const id = $(this).attr("data-id");
-    // console.log(id);
-    $.put("/api/user", { school: id }, result => {
-      console.log(result);
+    $.put("/api/user", { school: id }, () => {
       //Update the badge number by calling database and entering data
       $.get("/api/user_data").then(data => {
         $(".badge").text(data.schoolgleList);
