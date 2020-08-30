@@ -90,6 +90,8 @@ $(document).ready(() => {
         .val()
         .trim();
       clearAllMarkers();
+      $schoolContainer.empty();
+      $schoolContainer.prepend("<li class='collection-item'>Searching...</li>");
       if (searchTerm.match(/\d{4}/g)) {
         searchTerm = searchTerm.match(/\d{4}/g);
         // getSchoolsByPostcode(searchTerm).then(dbResponse => {
@@ -131,6 +133,13 @@ $(document).ready(() => {
       };
       $.post("/api/schools/nearby", body).then(response => {
         if (response.length === 0) {
+          $schoolContainer.empty();
+          $schoolContainer.prepend(
+            `<li class='collection-item'>
+              <p>Could not find any location results</p>
+              <p>Please try searching for 5000 to make sure there is a connection</p>
+            </li>`
+          );
           console.log("No results, try a bigger radius");
         } else {
           addMarkers(response);
@@ -142,7 +151,7 @@ $(document).ready(() => {
       Geocoder.geocode(
         {
           address: postcode.toString(),
-          // region: "AU"
+          region: "AU",
           bounds: mapBounds
         },
         (data, status) => {
