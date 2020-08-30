@@ -2,9 +2,9 @@
 // Requiring our models and passport as we've configured it
 // Plus the google maps client library
 const db = require("../models");
-const { Client } = require("@googlemaps/google-maps-services-js");
-const mapsKey = process.env.MAPS_API;
-const client = new Client({});
+// const { Client } = require("@googlemaps/google-maps-services-js");
+// const mapsKey = process.env.MAPS_API;
+// const client = new Client({});
 const Op = db.Sequelize.Op;
 
 module.exports = function (app) {
@@ -19,22 +19,39 @@ module.exports = function (app) {
   });
 
   app.post("/api/schools/nearby/", (req, res) => {
-    client
-      .placesNearby({
-        params: {
-          key: mapsKey,
-          location: [req.body.latitude, req.body.longitude],
-          keyword: "School",
-          rankby: "distance"
-        }
-      })
-      .then(({ data }) => {
-        // console.log(data);
-        res.json(data);
-      })
-      .catch(({ response }) => {
-        res.status(response.status).send(response.data.status);
-      });
+    const centerLat = parseFloat(req.body.latitude);
+    const centerLng = parseFloat(req.body.longitude);
+    const radius = parseFloat(req.body.radius);
+    const conditions = req.body.conditions || {};
+    conditions.latitude = {
+      [Op.gte]: centerLat - radius,
+      [Op.lte]: centerLat + radius
+    };
+    conditions.longitude = {
+      [Op.gte]: centerLng - radius,
+      [Op.lte]: centerLng + radius
+    };
+    // console.log(centerLng, centerLat);
+    // console.log(conditions);
+    db.School.findAll({ where: conditions }).then(dbSchools => {
+      res.json(dbSchools);
+    });
+    // client
+    //   .placesNearby({
+    //     params: {
+    //       key: mapsKey,
+    //       location: [req.body.latitude, req.body.longitude],
+    //       keyword: "School",
+    //       rankby: "distance"
+    //     }
+    //   })
+    //   .then(({ data }) => {
+    //     // console.log(data);
+    //     res.json(data);
+    //   })
+    //   .catch(({ response }) => {
+    //     res.status(response.status).send(response.data.status);
+    //   });
   });
 
   // Route for searching schools by name

@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-/* eslint-disable prettier/prettier */
 $(document).ready(() => {
   $("select").formSelect();
 
@@ -34,6 +33,11 @@ $(document).ready(() => {
     });
 
     /*
+     * Geocoder is for changing addresses to co-ordinates and vice-versa
+     */
+    const Geocoder = new google.maps.Geocoder();
+
+    /*
      * create infowindow (which will be used by markers)
      */
     const infoWindow = new google.maps.InfoWindow();
@@ -49,7 +53,7 @@ $(document).ready(() => {
         // icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
       });
       const html = htmlGenerator[window.location.pathname](school);
-      google.maps.event.addListener(marker, "click", function () {
+      google.maps.event.addListener(marker, "click", function() {
         infoWindow.setContent(html);
         infoWindow.open(map, this);
         map.setCenter(this.position);
@@ -57,93 +61,102 @@ $(document).ready(() => {
       return marker;
     }
 
-    const htmlGenerator = {
-      "/account": function (school) {
-        return `
-    <h6>${school.schoolName}</h6>
-    <p>${school.schoolSector}, ${school.yearRange}</p>
-    <p>Student/Teacher Ratio: ${(school.enrolmentsFTE / school.teachingStaffFTE).toFixed(1)}</p>
-    <p>Total students: ${school.enrolmentsTotal}</p>
-    `;
-      },
-      "/search": function (school) {
-        return `
-      <h6>${school.schoolName}</h6>
-      <p>${school.schoolSector}, ${school.schoolType}</p>
-      <button class='schoolButton' data-id='${school.id}'>Add</button>`;
-      }
-    };
+    // this is the square including South Australia.
+    // SW corner first, NE corner second
+    const mapBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(-38.3954896, 127.0565161),
+      new google.maps.LatLng(-24.9885453, 142.3494848)
+    );
 
     /*
      * Clear all markers from the map
      */
     function clearAllMarkers() {
-      markerArray.forEach(marker => marker.setMap(null));
-      markerArray.length = 0;
+      while (markerArray.length > 0) {
+        clearThisMarker(markerArray[0]);
+      }
     }
-    // map.setCenter(markerArray[0].position);
-    // $("select").formSelect();
-    const $schoolContainer = $(".school-container");
 
-    let schools = [];
+    function clearThisMarker(marker) {
+      marker.setMap(null);
+      markerArray.splice(markerArray.indexOf(marker), 1);
+    }
+
+    const $schoolContainer = $(".school-container");
 
     $("#submitBtn").on("click", () => {
       event.preventDefault();
-      console.log("submitted");
-      const searchTerm = $("#searchInput")
+      let searchTerm = $("#searchInput")
         .val()
         .trim();
-      // const typeSearchTerm = getTypeTerm();
-      console.log(searchTerm);
-      // console.log(typeSearchTerm);
       clearAllMarkers();
       if (searchTerm.match(/\d{4}/g)) {
-        getSchoolsByPostcode(searchTerm.match(/\d{4}/g));
+        searchTerm = searchTerm.match(/\d{4}/g);
+        // getSchoolsByPostcode(searchTerm).then(dbResponse => {
+        //   if (dbResponse.length > 0) {
+        //     addMarkers(dbResponse);
+        //   } else {
+        getLatLngFromPostcode(searchTerm);
+        // $schoolContainer.prepend(`
+        //   <li>
+        //     <a class='collection-item black-text' href='#!'>
+        //       <p class='seachList'>No results for that postcode</p>
+        //       <p class='seachList'>Checking google</p>
+        //     </a>
+        //   </li>
+        //   <div class='divider'></div>`);
+        //   }
+        // });
       } else {
-        getSchoolsByName(searchTerm, {
-          schoolType: getTypeTerm(),
-          state: getStateTerm()
-        });
+        getSchoolsByName(searchTerm).then(addMarkers);
       }
       // if we call this here it will add every school in the database of that type to the map as well
       // getSchoolByType(typeSearchTerm);
     });
 
-    $schoolContainer.on("click", "li", function () {
+    $schoolContainer.on("click", "li", function() {
       const index = parseInt($(this).data("index"));
       map.setCenter(markerArray[index].position);
     });
 
-    // get the school type from the form and put it into sequelize format
-    function getTypeTerm() {
-      switch ($("#school-type").val()) {
-      case null:
-        return ["Primary", "Secondary", "Combined", "Special"];
-      default:
-        return [$("#school-type").val()];
-      }
+    function getSchoolsByDistance(lat, lng, radius = 0.02) {
+      const body = {
+        radius: radius,
+        latitude: lat,
+        longitude: lng,
+        conditions: {
+          schoolType: getTypeTerm(),
+          state: getStateTerm()
+        }
+      };
+      $.post("/api/schools/nearby", body).then(response => {
+        if (response.length === 0) {
+          console.log("No results, try a bigger radius");
+        } else {
+          addMarkers(response);
+        }
+      });
     }
 
-    // get the state fromthe form and put it into sequelize format
-    function getStateTerm() {
-      switch ($("#state")) {
-      default:
-        return ["SA"];
-      }
-    }
-
-    function getSchoolsByPostcode(postcode) {
-      $.post("/api/schools/", {
-        postcode: postcode,
-        schoolType: getTypeTerm(),
-        state: getStateTerm()
-      }).then(addMarkers);
-    }
-
-    // schoolName here should be a string
-    // conditions is an object of the search conditions
-    function getSchoolsByName(schoolName, conditions) {
-      $.post("/api/schools/name/" + schoolName, conditions).then(addMarkers);
+    function getLatLngFromPostcode(postcode) {
+      Geocoder.geocode(
+        {
+          address: postcode.toString(),
+          // region: "AU"
+          bounds: mapBounds
+        },
+        (data, status) => {
+          if (status === "OK") {
+            const lat = data[0].geometry.location.lat();
+            const lng = data[0].geometry.location.lng();
+            getSchoolsByDistance(lat, lng);
+          } else {
+            $schoolContainer.prepend(
+              "<li class='collection-item'> Could not find any results </li>"
+            );
+          }
+        }
+      );
     }
 
     function addMarkers(schoolData) {
@@ -152,18 +165,15 @@ $(document).ready(() => {
       });
       if (markerArray.length) {
         map.setCenter(markerArray[0].position);
-      } else {
-        // make an error message display
       }
-      schools = schoolData;
-      initRows();
+      initRows(schoolData);
     }
 
-    function initRows() {
+    function initRows(schoolData) {
       $schoolContainer.empty();
       const rowsToAdd = [];
-      for (let i = 0; i < schools.length; i++) {
-        rowsToAdd.push(createSchoolRows(schools[i], i));
+      for (let i = 0; i < schoolData.length; i++) {
+        rowsToAdd.push(createSchoolRows(schoolData[i], i));
       }
       $schoolContainer.prepend(rowsToAdd);
     }
@@ -183,7 +193,8 @@ $(document).ready(() => {
           schools.state,
           "</span></p>",
           "</a>",
-          "</li>","<div class='divider'></div>"
+          "</li>",
+          "<div class='divider'></div>"
         ].join("")
       );
 
@@ -194,41 +205,24 @@ $(document).ready(() => {
 
     const initMap = {
       "/account": function() {
-        const schoolgleMarkers = [];
-        $("tr").each(function() {
-          if ($(this).children("td").length > 0){
-            schoolgleMarkers.push({
-              latitude: parseFloat($(this).data("lat")),
-              longitude: parseFloat($(this).data("long")),
-              schoolName: $(this).children("td")[0].textContent,
-              yearRange: $(this).children("td")[2].textContent,
-              schoolSector: $(this).children("td")[3].textContent,
-              enrolmentsTotal: parseInt($(this).data("enrolments")),
-              enrolmentsFTE: parseFloat($(this).data("enrolmentsfte")),
-              teachingStaffFTE: parseFloat($(this).data("teachersfte"))
-            });
-          }
-        });
-        console.log(schoolgleMarkers);
+        const schoolgleMarkers = accountInit();
         if (schoolgleMarkers.length > 0) {
           addMarkers(schoolgleMarkers);
         }
       },
-        "/search": function() {
-          const searchTerm = $("#schoolSearch").data("postcode");
-          console.log(searchTerm);
-          getSchoolsByPostcode(searchTerm);
+      "/search": function() {
+        const searchTerm = $("#schoolSearch").data("postcode");
+        if (searchTerm) {
+          getLatLngFromPostcode(searchTerm); //.then(addMarkers);
           $("#searchInput").val(searchTerm);
         }
+      }
     };
     initMap[window.location.pathname]();
   });
-  $(document).on("click", ".schoolButton", function () {
-    // console.log("in btn");
+  $(document).on("click", ".schoolButton", function() {
     const id = $(this).attr("data-id");
-    // console.log(id);
-    $.put("/api/user", { school: id }, result => {
-      console.log(result);
+    $.put("/api/user", { school: id }, () => {
       //Update the badge number by calling database and entering data
       $.get("/api/user_data").then(data => {
         $(".badge").text(data.schoolgleList);
